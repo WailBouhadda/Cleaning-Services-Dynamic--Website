@@ -22,3 +22,28 @@ window.addEventListener("scroll", function (){
     })
     
     /*End --- Change navigation Bar on scroll --- */
+
+
+    /* Start show login password  */
+
+	function showPassword(name){
+        var password = document.getElementById(name);
+        var show = document.getElementById("eyeShow"+name);
+        var hide = document.getElementById("eyeHide"+name);
+        show.style.color = "red";
+
+
+            if(password.type === 'password'){
+                password.type = "text"
+                show.style.display = "block";
+                hide.style.display = "none";
+            }
+            else{
+                password.type = "password"
+                show.style.display = "none";
+                hide.style.display = "block";
+            }
+    }
+    
+
+        /* end show login password  */

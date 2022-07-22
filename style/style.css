@@ -102,7 +102,7 @@
 .header{
     font-family: var(--font-secondary);
     background-image: url(../images/homebackground.png);
-    height: 100vh;
+    height: 95vh;
     position: relative;
     z-index: 0;
     background-size: cover;
@@ -121,7 +121,8 @@
 }
 
 /* start navbar */
-.header .navbar{
+.navbar{
+    font-family: var(--font-secondary);
     width: 100%;
     background-color: var(--color-secondary-trans);
     box-shadow: 0 0 5px #2c2c2c7a;
@@ -129,7 +130,7 @@
     top:0;
     z-index: 100;
 }
-.header .navbar .container{
+.navbar .container{
     display: flex;
     height: 100%;
     justify-content: space-between;
@@ -139,30 +140,30 @@
 }
 
 @media (max-width: 767px){
-    .header .navbar .container{
+    .navbar .container{
        flex-wrap: wrap;
     }
     
 }
-.header .navbar .container  a{
+.navbar .container  a{
     text-decoration: none;
 }
 
-.header .navbar .container .logo{
+.navbar .container .logo{
         width: fit-content;
     padding: 5px;
 }
-.header .navbar .container .logo img{
+.navbar .container .logo img{
 
     height: 55px;
 }
-.header .navbar .container .nav{
+.navbar .container .nav{
     flex: 1;
     position: relative;
 
 }
 
-    .header .navbar .container .nav ul{
+    .navbar .container .nav ul{
         height: 100%;
         list-style: none;
         text-decoration: none;
@@ -174,7 +175,7 @@
         position: relative;
 
     }
-.header .navbar .container  .nav ul li{
+.navbar .container  .nav ul li{
     color: var(--color-primary);
     height: 100%;
     display: flex;
@@ -186,11 +187,11 @@
     transition-timing-function: ease-in;
 
 }
-.header .navbar .container  .nav ul li:last-of-type{
+.navbar .container  .nav ul li:last-of-type{
 
     margin-left: 50px;
 }
-.header .navbar .container .nav ul li a{
+.navbar .container .nav ul li a{
     color: var(--color-primary);
     font-weight: bold;
     height: 100%;
@@ -199,11 +200,11 @@
     transition-timing-function: ease-in;
     
 }
-.header .navbar .container  .nav ul li:hover a{
+.navbar .container  .nav ul li:hover a{
     color: var(--color-primary);
     
 }
-.header .navbar .container .nav ul li a::before{
+.navbar .container .nav ul li a::before{
 
     content: "";
     position: absolute;
@@ -214,11 +215,11 @@
     left: -100%;
     transition-duration: 0.3s;
 }
-.header .navbar .container .nav ul li:hover a::before{
+.navbar .container .nav ul li:hover a::before{
     left: 0%;
 }
 
-.header .navbar .container .nav ul .otherlink{
+.navbar .container .nav ul .otherlink{
     position: absolute;
     transition-duration: 0.3s;
     transition-timing-function: linear;
@@ -233,19 +234,19 @@
     opacity: 0%;
     
 }
-.header .navbar .container  .nav ul li:last-of-type:hover + .otherlink{
+.navbar .container  .nav ul li:last-of-type:hover + .otherlink{
 
     transition-duration: 0.3s;
     transition-timing-function: linear;
     top: calc(100%);
     opacity: 100%;
 }
-.header .navbar .container  .nav ul .otherlink:hover{
+.navbar .container  .nav ul .otherlink:hover{
 
     top: calc(100%);
     opacity: 100%;
 }
-.header .navbar .container .nav ul .otherlink .links{
+.navbar .container .nav ul .otherlink .links{
 
     display: flex;
     flex-direction: column;
@@ -255,7 +256,7 @@
     
 
 }
-.header .navbar .container .nav ul .otherlink .links a{
+.navbar .container .nav ul .otherlink .links a{
 
    padding: 10px;
    border-bottom: 1px solid #ececec;
@@ -265,7 +266,7 @@
     font-weight: bold;
 
 }
-.header .navbar .container .nav ul .otherlink .links a::after{
+.navbar .container .nav ul .otherlink .links a::after{
 
     content: "";
     background-color: #e7e6e6eb;
@@ -278,36 +279,36 @@
     transition-duration: 0.2s;
     transition-timing-function: linear;
 }
-.header .navbar .container .nav ul .otherlink .links a:hover::after{
+.navbar .container .nav ul .otherlink .links a:hover::after{
 
     width: 100%;
 }
-.header .navbar .container .nav ul .otherlink .links a:last-of-type,
-.header .navbar .container .nav ul .otherlink .links a:nth-last-of-type(2){
+.navbar .container .nav ul .otherlink .links a:last-of-type,
+.navbar .container .nav ul .otherlink .links a:nth-last-of-type(2){
     border: none;
 }
-.header .navbar .container .nav ul .otherlink .links a i{
+.navbar .container .nav ul .otherlink .links a i{
    margin-right: 15px;
 }
 
 @media (max-width:767px) {
-    .header .navbar .container{
+    .navbar .container{
         height: 100%;
         transition-duration: 0.2s;
         transition-timing-function: ease-in;
     }
 
-    .header .navbar .container .logo{
+    .navbar .container .logo{
         width: 100%;
         text-align: center;
         padding: 5px;
     }
-    .header .navbar .container .nav ul{
+    .navbar .container .nav ul{
         justify-content: center;
         transition-duration: 0.2s;
         transition-timing-function: ease-in;
     }
-    .header .navbar .container .nav ul li a{
+    .navbar .container .nav ul li a{
         padding: 10px;
         font-size: 14px;
         transition-duration: 0.2s;
@@ -655,38 +656,30 @@
 .contact .container .livechat{
     flex: 1;
     height: 400px;
-    background-image: url(../images/livechat.jpg);
+    background-image: url(../images/livechat.png);
     background-size: cover;
-    position: relative;
-    z-index: -1;
     color: white;
     list-style: none;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.contact .container .livechat::before{
-    content: "";
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.623);
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+    
 }
 
 .contact .container .livechat a{
 
     text-decoration: none;
     color: var(--color-primary);
-    background-color: var(--color-secondary-trans);
+    background-color: var(--color-secondary);
     border: 1px solid var(--color-primary);
     padding: 15px;
     border-radius: 5px;
+    filter: none;
 }
 .contact .container .livechat a:hover{
 
     color: var(--color-secandary);
-    background-color: var(--color-primary-trans);
+    background-color: var(--color-primary);
     border: 1px solid var(--color-secandary);;
 }
 .contact .container form{
@@ -836,3 +829,184 @@ height: 400px;
     color: var(--color-secondary);
 }
 /*end footer*/
+
+
+
+/* start login */
+
+.login{
+    font-family: var(--font-primary);
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login .form{
+
+    width: 40%;
+    box-shadow: 1px 1px 20px 0px #0000002b;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+
+.login .form h1{
+
+    color: var(--color-primary);
+}
+
+.login .form form{
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 30px;
+}
+.login .form form .defaultdiv{
+    margin: 0px auto;
+    padding-bottom: 0px;
+    width: 100%;
+    border-bottom: none;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 25px;
+    justify-content: flex-start;
+    font-family: var(--font-fredoka);
+    align-items: center;
+
+	
+}
+.login .form form .defaultdiv .flex{
+
+    display: flex;
+}
+
+.login .form form div{
+    margin: 5px auto;
+    padding-bottom: 10px;
+    width: 100%;
+    border-bottom: 1px solid var(--color-primary-trans);
+    margin-bottom: 10px;
+	
+}
+
+.login .form form div input{
+	width:  90%;
+	border: none;
+	outline: none;
+	background: transparent;
+	color: black;
+}
+
+.login .form form div .check{
+
+    width: fit-content;
+}
+
+.login .form form div input::placeholder{
+	color:  black;
+}
+
+.login .form form .fa{
+	margin-right: 10px;
+	color: var(--color-primary);
+}
+
+
+.login .form form .eye{
+	position: absolute;
+	color: var(--color-primary);
+}
+
+.login .form form #eyeShow{
+	display:  none;
+}
+.login .form form .submit{
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    border-bottom: none;
+
+}
+
+.login .form form .submit button{
+
+    padding: 10px;
+    font-weight: 600;
+    color: var(--color-secondary);
+    border: 3px solid var(--color-primary);
+    background-color: var(--color-primary);
+    border-radius: 10px;
+
+}
+.login .form form .submit button i{
+
+    margin-left: 5px;
+}
+.login .form form .submit button:hover{
+
+    color: var(--color-primary);
+    background-color: var(--color-secondary);
+}
+
+
+
+
+
+/* end login */
+
+
+
+
+/* start reserver rapidement */
+
+.login .form form .defaultdiv .defaultdiv .inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.login .form form .defaultdiv p{
+
+    width: 30%;
+    color: black;
+}
+
+.login .form form .defaultdiv .defaultdiv .inputfile + label {
+    width: 100%;
+    padding: 5px;
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    color: var(--color-primary);
+    background-color: var(--color-secondary);
+    display: inline-block;
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login .form form .defaultdiv .defaultdiv .inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+.login .form form .defaultdiv .defaultdiv .inputfile + label i{
+
+    font-size: 20px;
+}
+.login .form form .defaultdiv .defaultdiv .inputfile:focus + label,
+.login .form form .defaultdiv .defaultdiv .inputfile + label:hover {
+    background-color: var(--color-primary);
+}
+
+.login .form form .defaultdiv .defaultdiv .inputfile:focus + label,
+.login .form form .defaultdiv .defaultdiv .inputfile + label:hover i {
+    color: var(--color-secondary);
+}
+
+/* end reserver rapidement */

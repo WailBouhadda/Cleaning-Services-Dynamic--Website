@@ -4,7 +4,7 @@
  
  
  <!--start navbar-->
- <div class="header">
+ 
         <div class="navbar">
             <div class="container">
                 <div class="logo">
@@ -12,15 +12,15 @@
                 </div>
                 <div class="nav">
                     <ul>
-                        <li><a href="#Home">Home</a></li>
-                        <li><a href="#AboutUs">About Us</a></li>
-                        <li><a href="#Services">Services</a></li>
-                        <li><a href="#Contact">Contact</a></li>
-                        <li><i class="fa-solid fa-user"></i></li>
+                        <li><a href="index.php#Home">Home</a></li>
+                        <li><a href="index.php#AboutUs">About Us</a></li>
+                        <li><a href="index.php#Services">Services</a></li>
+                        <li><a href="index.php#Contact">Contact</a></li>
+                        <li><i onclick="window.location.href='login.php'" class="fa-solid fa-user"></i></li>
                         <div class="otherlink">
                             <div class="links">
-                                <a href="">Connexion</a>
-                                <a href="">Inscription</a>
+                                <a href="login.php">Connexion</a>
+                                <a href="register.php">Inscription</a>
                             </div>
                         </div>
                     </ul>

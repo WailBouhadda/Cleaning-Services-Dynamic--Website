@@ -26,18 +26,18 @@
 
 
      <!--start home-->
-
+    <div class="header">
         <div class="home" id="Home">
              <div class="container">
-                 <div class="text">
+                <div class="text">
                         <h1>RENDRE VOTRE MONDE </h1>  
                         <h1>AUSSI <span> PROPRE </span> QUE <span> NEUF </span></h1>
                         <div class="rapide">
-                            <a href=""> RESERVER MAINTENANT </a>
-                            <a href=""> PLUS <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="reserverapidement.php"> RESERVER MAINTENANT </a>
+                            <a href="#Services"> PLUS <i class="fa-solid fa-arrow-right"></i></a>
                         </div>
                           
-                  </div>                  
+                </div>                  
              </div>
             <a href="#AboutUs"> <i class="fa-solid fa-angles-down"></i></a>
 
@@ -193,8 +193,9 @@
 </div>
 <!-- end footer-->
 
-
 <script src="js/script.js"></script>
+
+
     
 </body>
 </html>
