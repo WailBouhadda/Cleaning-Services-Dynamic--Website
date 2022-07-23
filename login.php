@@ -23,9 +23,12 @@ if(isset($_POST['connexion'])){
     $client = $loginDAO->clientLogin($email, $password);
 
     if($client != null){
+
       session_start();
-      $_SESSION['admin'] = $client;
-      header("Location:index.php");
+
+      $_SESSION['client'] = $client;
+
+      header("Location:PROFILE/index.php");
       
     }else{
 
@@ -61,7 +64,7 @@ if(isset($_POST['connexion'])){
 </head>
 <body>
 
-<?php include("themeparts/navbar.php"); ?>
+<?php include("navbar.php"); ?>
 
 <div class="login">
   

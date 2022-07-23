@@ -22,7 +22,7 @@
     <title>Allo Menage</title>
 </head>
 <body>
-<?php require("themeparts/navbar.php"); ?>
+<?php require("navbar.php"); ?>
 
 
      <!--start home-->

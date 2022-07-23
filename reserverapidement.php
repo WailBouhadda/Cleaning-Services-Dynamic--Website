@@ -135,7 +135,7 @@ if(isset($_POST['reserverapidement'])){
 </head>
 <body>
 
-<?php include("themeparts/navbar.php"); ?>
+<?php include("navbar.php"); ?>
 
 <div class="login">
   

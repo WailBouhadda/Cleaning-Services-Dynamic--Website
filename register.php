@@ -32,7 +32,7 @@ if(isset($_POST['inscription'])){
     if($error == 1){
       session_start();
       $_SESSION['client'] = $client;
-      header("Location:index.php");
+      header("Location:PROFILE/index.php");
       
     }else{
 
@@ -68,7 +68,7 @@ if(isset($_POST['inscription'])){
 </head>
 <body>
 
-<?php include("themeparts/navbar.php"); ?>
+<?php include("navbar.php"); ?>
 
 <div class="login">
   
