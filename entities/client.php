@@ -3,10 +3,12 @@
 class client{
 
     private $id;
+    private $idcard;
     private $nom;
     private $prenom;
     private $email;
     private $telephone;
+    private $adresse;
     private $password;
 
 
@@ -18,6 +20,17 @@ class client{
     public function getId(){
         return $this->id;
     }
+    
+
+
+    public function setIdcard($idcard){
+        $this->idcard = $idcard;
+    }
+
+    public function getIdcard(){
+        return $this->idcard;
+    }
+
 
 
     
@@ -59,6 +72,15 @@ class client{
         return $this->telephone;
     }
 
+
+
+    public function setAdresse($adresse){
+        $this->adresse = $adresse;
+    }
+
+    public function getAdresse(){
+        return $this->adresse;
+    }
 
 
 

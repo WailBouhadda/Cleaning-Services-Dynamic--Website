@@ -16,6 +16,8 @@ $error = null;
 
 if(isset($_POST['reserverapidement'])){
 
+
+
     /* idcard handling */
     if($_FILES['file']['error'] === 4){
 
@@ -41,10 +43,14 @@ if(isset($_POST['reserverapidement'])){
 
             move_uploaded_file($tmpName, 'idcards/' . $newImaeName);
 
+
+            $client->setIdcard($newImaeName);
                         
-            if(isset($_POST['creercompte'])){
 
 
+                /* get reservation data */
+
+                /* client infos */
                 $nom = $_POST['nom'];
                 $client->setNom($nom);
                 $prenom = $_POST['prenom'];
@@ -53,13 +59,43 @@ if(isset($_POST['reserverapidement'])){
                 $client->setEmail($email);
                 $telephone = $_POST['telephone'];
                 $client->setTelephone($telephone);
-                $password = $_POST['password'];
+                $adresse = $_POST['adresse'];
+                $client->setAdresse($adresse);
+                $password = $_POST['telephone'];
                 $client->setPassword($password);
 
-                $error = $registerDAO->clientregister($client);
+                /* /.client infos */
 
 
-                $idclientSQL = "SELECT idclient FROM users WHERE email = '".$nom."' and password = '".$prenom."' and email ='".$email."'";
+                /* seance details */
+
+
+                $typemenage = $_POST['typemenage'];
+                $duree = $_POST['duree'];
+                $ville = $_POST['ville'];
+                $nbrpersonne = $_POST['nbrpersonne'];
+                $datemenage = date('y-m-d',strtotime($_POST['datemenage']));
+                $frequence = $_POST['frequence'];
+                $autre = $_POST['autre'];
+                $tools = false;
+                if(isset($_POST['tools'])){
+                    $tools = true;
+                }
+
+
+                
+
+                /* /.seance details */
+
+
+
+                /* /.get reservation data */
+
+
+                $registerDAO->clientregister($client);
+
+
+                $idclientSQL = "SELECT iduser FROM users WHERE nom = '".$nom."' and prenom = '".$prenom."' and email ='".$email."'";
                     
                 $result = $DB->executeSQL($idclientSQL);
 
@@ -69,34 +105,37 @@ if(isset($_POST['reserverapidement'])){
 
                     if($row = $result->fetch_assoc()){
                         
-                        $idclient = $row["idclient"];
+                        $idclient = $row["iduser"];
                     }
 
                 }
-                $inserclientSQL = "INSERT INTO reservation(idcard, idclient) 
-                    VALUES('".$newImaeName."','".$idclient."')" ;
 
-                if($error == 1){
+
+
+                $inserclientSQL = "INSERT INTO reservation(typemenage, duree, ville, adresse, nbrpersonne, dateseance, frequence, idclient, autre, outils) 
+                VALUES('".$typemenage."','".$duree."','".$ville."','".$adresse."','".$nbrpersonne."',
+                '".$datemenage."','".$frequence."','".$idclient."','".$autre."','".$tools."')" ;
+                
+                $test = $DB->executeSQL($inserclientSQL);
+
+
+
+
+
+                if($test){
+
                 session_start();
                 $_SESSION['client'] = $client;
-                header("Location:index.php");
+                header("Location:PROFILE/index.php");
                 
                 }else{
 
                 echo "Register Failed";
                 }
 
-            }else{
-                $nom = $_POST['nom'];
-                $prenom = $_POST['prenom'];
-                $email = $_POST['email'];
 
-                $inserclientSQL = "INSERT INTO reservation(idcard, nom, prenom, email) 
-                    VALUES('".$newImaeName."','".$nom."','".$prenom."','".$email."')" ;
-                    
-                    $test = $DB->executeSQL($inserclientSQL);
-
-            }
+         
+            
 
         }
          /* /.idcard handling */
@@ -143,6 +182,74 @@ if(isset($_POST['reserverapidement'])){
         <h1>RESERVER RAPIDEMENT</h1>
         <form action="" method="post" enctype="multipart/form-data">
             <div class="defaultdiv">
+                <div class="select flex">
+                    <i class="fa fa-solid fa-broom"></i>
+                    <select name="typemenage" id="typemenage">
+                        <option value="" hidden disabled selected>Type De Menage...</option>
+                        <option value="Menage Normale">Menage Normale</option>
+                        <option value="Nettoyage Des Bureaux">Nettoyage Des Bureaux</option>
+                        <option value="Nettoyage Vitres">Nettoyage Vitres</option>
+                        <option value="Grand Ménage">Grand Ménage</option>
+                        <option value="Nettoyage Avant Déménagement">Nettoyage Avant Déménagement</option>
+                    </select>
+                </div>
+                <div class="select flex">
+                    <i class="fa fa-solid fa-clock"></i>
+                    <select name="duree" id="duree">
+                        <option value="" hidden disabled selected>Duree De Menage...</option>
+                        <option value="2">2 H</option>
+                        <option value="3">3 H</option>
+                        <option value="4">4 H</option>
+                        <option value="5">5 H</option>
+                        <option value="6">6 H</option>
+                        <option value="7">7 H</option>
+                        <option value="8">8 H</option>
+                    </select>
+                </div>
+            </div>
+            <div class="defaultdiv">
+                <div class="select flex">
+                    <i class="fa fa-solid fa-city"></i>
+                    <select name="ville" id="ville">
+                        <option value="" hidden disabled selected>Ville...</option>
+                        <option value="Casablanca">Casablanca</option>
+                        <option value="Mohemmadia">Mohemmadia</option>
+                        <option value="Bouskoura">Bouskoura</option>
+                        <option value="Berrchid">Berrchid</option>
+                        <option value="Tite Mellil">Tite Mellil</option>
+                        <option value="Sidi Rehal">Sidi Rehal</option>
+                        <option value="Deroua">Deroua</option>
+                    </select>
+                </div>
+                <div class="select flex">
+                    <i class="fa fa-solid fa-people-group"></i>
+                    <select name="nbrpersonne" id="duree">
+                        <option value="" hidden disabled selected>Nombre de personnes...</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="defaultdiv">
+                <div class="select flex">
+                    <i class="fa fa-solid fa-calendar-days"></i>
+                    <input type="date" name="datemenage" id="datemenage">
+                </div>
+                <div class="select flex">
+                    <i class="fa fa-solid fa-repeat"></i>
+                    <select name="frequence" id="frequence">
+                        <option value="" hidden disabled selected>Fréquence Ses Séances...</option>
+                        <option value="fois">Une Fois</option>
+                        <option value="quotidien">Quotidien</option>
+                        <option value="hebdomadaire">Hebdomadaire</option>
+                        <option value="Mensuel">mensuel</option>
+                    </select>
+                </div>
+            </div>
+            <div class="defaultdiv">
                 
                 <div class="defaultdiv">
                     <input type="file" name="file" id="file" accept=".jpg, .jpeg, .png" class="inputfile" />
@@ -165,23 +272,25 @@ if(isset($_POST['reserverapidement'])){
 			</div>
             <div class="phoneinput">
                  <i class="fa fa-solid fa-phone"></i>
-				 <input type="text" name="phone" placeholder="Telephone..." required>
+				 <input type="text" name="telephone" placeholder="Telephone..." required>
 			</div>
-			<div class="passwordInput">
-				<i class="fa fa-key"></i>
-				 <input type="password" placeholder="Mot de passe..." name="password" id="password" required>
-				 <span class="eye" onclick="showPassword('password')">
-				 <i id="eyeShowpassword" style="display:none;" class="fa fa-eye"></i>
-				 <i id="eyeHidepassword"  style="display:block;" class="fa fa-eye-slash"></i>
-				 </span>
+            <div class="adresse input">
+                 <i class="fa fa-solid fa-location-dot"></i>
+				 <input type="text" name="adresse" placeholder="Adresse..." required>
+			</div>
+            <div class=" input">
+                 <i class="fa fa-solid fa-circle-info"></i>
+				 <input type="text" name="autre" placeholder="Autre...">
 			</div>
             <div class="defaultdiv flex">
-                <input type="checkbox" class="check" name="creercompte" Value="CREERCOMPTE" id="creercompte">
-                <label for="creercompte"> Creer Compte </label>
+                <i class="fa fa-solid fa-toolbox"></i>
+                <input type="checkbox" class="check" name="tools" Value="" id="produitsetoutils">
+                <label for="produitsetoutils"> Produits et Outils <span style="font-size: 12px; color: var(--color-primary);">(+ 100 DH)</span></label>
             </div>
+            
             <div class="submit">
-                <button  type="submit" name="reserverapidement" value="RESERVERRAPIDEMENT">RESERVER RAPIDEMENT</button>
                 <button onclick="window.location.href='index.php#Services'"  name="voiroffres" value="VOIREOFFRES">VOIRE OFFRES<i class="fa-solid fa-arrow-right"></i></button>
+                <button  type="submit" name="reserverapidement" value="RESERVERRAPIDEMENT">RESERVER MAINTENANT</button>
             </div>
         </form>
     </div>

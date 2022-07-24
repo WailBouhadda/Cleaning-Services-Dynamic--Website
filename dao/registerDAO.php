@@ -24,8 +24,8 @@ class registerDAO{
 
             }else{
 
-                $inserclientSQL = "INSERT INTO users(nom, prenom, email, telephone, password) 
-                VALUES('".$c->getNom()."','".$c->getPrenom()."','".$c->getEmail()."','".$c->getTelephone()."','".$c->getPassword()."')" ;
+                $inserclientSQL = "INSERT INTO users(idcard, nom, prenom, email, telephone, adresse, password) 
+                VALUES('".$c->getIdcard()."','".$c->getNom()."','".$c->getPrenom()."','".$c->getEmail()."','".$c->getTelephone()."','".$c->getAdresse()."','".$c->getPassword()."')" ;
                 
                 $test = $this->DB->executeSQL($inserclientSQL);
 

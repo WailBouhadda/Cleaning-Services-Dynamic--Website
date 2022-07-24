@@ -837,10 +837,10 @@ height: 400px;
 .login{
     font-family: var(--font-primary);
     width: 100%;
-    height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 150px;
 }
 .login .form{
 
@@ -881,6 +881,7 @@ height: 400px;
 .login .form form .defaultdiv .flex{
 
     display: flex;
+    align-items: center;
 }
 
 .login .form form div{
@@ -1008,5 +1009,13 @@ height: 400px;
 .login .form form .defaultdiv .defaultdiv .inputfile + label:hover i {
     color: var(--color-secondary);
 }
+
+.login .form form .defaultdiv .select select{
+
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
 
 /* end reserver rapidement */
