@@ -3,7 +3,7 @@
 require_once("../tools/DBconnection.php");
 require("../entities/client.php");
 
-$page = "AJOUTER RESERVATION";
+$page = "LISTE RESERVATIONS";
 
 $DB = new DBconnection;
 
@@ -36,7 +36,7 @@ if($client != null){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><?php echo $page;?></title>
 
 
     <meta name="description" content="overview &amp; stats" />
@@ -240,11 +240,11 @@ if($client != null){
 																	<i class="ace-icon fa fa-search-plus bigger-130"></i>
 																</a>
 
-																<a class="green" href="#">
+																<a class="green" href="updatereservation.php?idres=<?php echo $id;?>">
 																	<i class="ace-icon fa fa-pencil bigger-130"></i>
 																</a>
 
-																<a class="red" href="#">
+																<a class="red" href="deletereservation.php?idres=<?php echo $id;?>">
 																	<i class="ace-icon fa fa-trash-o bigger-130"></i>
 																</a>
 															</div>

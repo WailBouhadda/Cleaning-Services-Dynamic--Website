@@ -67,7 +67,7 @@
 								<b class="arrow"></b>
 							</li>
 
-							<li class="<?php if($page === "LIST RESERVATIONS"){ echo "active"; }; ?>">
+							<li class="<?php if($page === "LISTE RESERVATIONS"){ echo "active"; }; ?>">
 								<a href="listreservation.php">
 									<i class="menu-icon fa fa-caret-right"></i>
 									List

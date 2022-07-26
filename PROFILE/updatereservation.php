@@ -3,7 +3,7 @@
 require_once("../tools/DBconnection.php");
 require("../entities/client.php");
 
-$page = "AJOUTER RESERVATION";
+$page = "MODIFIER RESERVATION";
 
 $DB = new DBconnection;
 
@@ -27,13 +27,46 @@ if($client != null){
 }
 
 
-if(isset($_POST['RESERVER'])){
+if(isset($_GET['idres'])){
+
+    $idreservation = $_GET['idres'];
+    $selectreservationSQL = "SELECT * FROM reservation WHERE idreservation = ".$idreservation;
+
+    $reservation = $DB->executeSQL($selectreservationSQL);
+
+    if($reservation->num_rows > 0){
+
+        if( $row = $reservation->fetch_assoc()){
+
+
+            $u_id = $row["idreservation"]; 
+            $u_typemenage = $row['typemenage'];
+            $u_duree = $row['duree'];
+            $u_ville = $row['ville'];
+            $u_nbrpersonne = $row['nbrpersonne'];
+            $u_datemenage = $row['dateseance'];
+            $u_datereservation = $row['datereservation'];
+            $u_frequence = $row['frequence'];
+            $u_autre = $row['autre'];
+            $u_adresse = $row['adresse'];
+            $u_tools = $row['outils'];
+
+        }
+    }
+           
+
+}else{
+    header("Location:listreservation.php");
+}
+
+
+if(isset($_POST['MODIFIER'])){
 
 
 $typemenage = $_POST['typemenage'];
-$duree = $_POST['duree'];
+$duree = $_POST['dureemenage'];
 $ville = $_POST['ville'];
-$nbrpersonne = $_POST['nbrpersonne'];
+$nbrpersonne = $_POST['nbrpersonnes'];
 $datemenage = date('y-m-d',strtotime($_POST['dateseance']));
 $frequence = $_POST['frequence'];
 $autre = $_POST['autre'];
@@ -46,11 +79,12 @@ if(isset($_POST['outils'])){
 
 
 
-$insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adresse, nbrpersonne, dateseance, frequence, idclient, autre, outils) 
-                VALUES('".$typemenage."','".$duree."','".$ville."','".$adresse."','".$nbrpersonne."',
-                '".$datemenage."','".$frequence."','".$idclient."','".$autre."','".$tools."')" ;
+$updatereservationSQL = "UPDATE reservation SET typemenage = '".$typemenage."', duree = '".$duree."', ville = '".$ville."', adresse = '".$adresse."', nbrpersonne = '".$nbrpersonne."'
+                , dateseance = '".$datemenage."', frequence = '".$frequence."', idclient = '".$idclient."', autre = '".$autre."', outils =  '".$tools."' ";
                 
-                $test = $DB->executeSQL($insertreservationSQL);
+                $test = $DB->executeSQL($updatereservationSQL);
+
+                header("Location:listreservation.php");
 
 }
 
@@ -146,7 +180,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 								<a href="#">Home</a>
 							</li>
 
-							<li class="active">Ajouter Reservation</li>
+							<li class="active">Modifier Reservation</li>
 						</ul><!-- /.breadcrumb -->
 
 						<!-- #section:basics/content.searchbox -->
@@ -167,7 +201,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 						<!-- /section:settings.box -->
 						<div class="page-header">
 							<h1>
-                                Ajouter Reservation
+                                Modifier Reservation
 								<small>
 									<i class="ace-icon fa fa-angle-double-right"></i>
 								</small>
@@ -183,7 +217,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 										<label for="typemenage">Type De Menage</label>
 										<br />
 										<select class="chosen-select form-control" id="typemenage" name="typemenage" data-placeholder="Type De Menage...">
-											<option value="">  </option>
+											<option value="<?php echo $u_typemenage;?>" selected><?php echo $u_typemenage;?></option>
 											<option value="Menage Normale">Menage Normale</option>
 											<option value="Nettoyage Des Bureaux">Nettoyage Des Bureaux</option>
 											<option value="Nettoyage Vitres">Nettoyage Vitres</option>
@@ -196,7 +230,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 										<label for="duree">Duree De Menage</label>
 										<br />
 										<select class="chosen-select form-control" id="duree" name="duree" data-placeholder="Duree De Menage...">
-											<option value="">  </option>
+											<option value="<?php echo $u_duree;?>" selected> <?php echo $u_duree;?> H</option>
 											<option value="2">2 H</option>
 											<option value="3">3 H</option>
 											<option value="4">4 H</option>
@@ -214,7 +248,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 										<label for="ville">Ville</label>
 										<br />
 										<select class="chosen-select form-control" id="ville" name="ville" data-placeholder="Ville...">
-											<option value="">  </option>
+											<option value="<?php echo $u_ville;?>" selected> <?php echo $u_ville;?> </option>
 											<option value="Casablanca">Casablanca</option>
 											<option value="Mohemmadia">Mohemmadia</option>
 											<option value="Bouskoura">Bouskoura</option>
@@ -229,7 +263,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 										<label for="nbrpersonne">Nombre de personnes</label>
 										<br />
 										<select class="chosen-select form-control" id="nbrpersonne" name="nbrpersonne" data-placeholder="Nombre de personnes...">
-											<option value="">  </option>
+											<option value="<?php echo $u_nbrpersonne;?>" selected> <?php echo $u_nbrpersonne;?> </option>
 											<option value="1">1</option>
 											<option value="2">2</option>
 											<option value="3">3</option>
@@ -243,7 +277,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 									<div class="col-sm-12">
 										<label for="adresse">Adresse</label>
 										<br />
-										<input class="form-control" type="text" name="adresse" id="adresse" value="<?php echo $adresse;?>">
+										<input class="form-control" type="text" name="adresse" id="adresse" value="<?php echo $u_adresse;?>">
 									</div>
 								</div>
 								<hr>
@@ -254,7 +288,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 										<br />
 										<!-- #section:plugins/date-time.datepicker -->
 										<div class="input-group">
-											<input class="form-control date-picker" id="dateseance" name="dateseance" type="text" data-date-format="dd-mm-yyyy" />
+											<input class="form-control date-picker" id="dateseance" name="dateseance" value="<?php echo $u_datemenage;?>" type="text" data-date-format="dd-mm-yyyy" />
 											<span class="input-group-addon">
 													<i class="fa fa-calendar bigger-110"></i>
 											</span>
@@ -265,7 +299,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 										<label for="frequence">Fréquence Ses Séances</label>
 										<br />
 										<select class="chosen-select form-control" id="frequence" name="frequence" data-placeholder="Fréquence Ses Séances...">
-											<option value="">  </option>
+											<option value="<?php echo $u_frequence;?>" selected> <?php echo $u_frequence;?> </option>
 											<option value="fois">Une Fois</option>
 											<option value="quotidien">Quotidien</option>
 											<option value="hebdomadaire">Hebdomadaire</option>
@@ -278,7 +312,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 									<div class="col-sm-12">
 										<label for="autre">Autre</label>
 										<br />
-										<input class="form-control" type="text" name="autre" id="autre">
+										<input class="form-control" type="text" name="autre" value="<?php echo $u_autre;?>" id="autre">
 									</div>
 								</div>
 								<hr>
@@ -287,7 +321,7 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 										<!-- #section:custom/checkbox -->
 										<div class="checkbox">
 											<label>
-												<input name="outils" type="checkbox" class="ace" />
+												<input name="outils" type="checkbox" class="ace" <?php if($u_tools){ echo "checked"; }?> />
 												<span class="lbl"> Produits et Outils <span style="font-size: 12px; color: green;">(+ 100 DH)</span></span>
 											</label>
 										</div>
@@ -296,9 +330,9 @@ $insertreservationSQL = "INSERT INTO reservation(typemenage, duree, ville, adres
 								<hr>
 								<div class="clearfix form-actions">
 										<div class="col-md-offset-3 col-md-9">
-											<button class="btn btn-info" type="submit" name="RESERVER">
+											<button class="btn btn-info" type="submit" name="MODIFIER">
 												<i class="ace-icon fa fa-check bigger-110"></i>
-												RESERVER
+												MODIFIER
 											</button>
 
 											&nbsp; &nbsp; &nbsp;
