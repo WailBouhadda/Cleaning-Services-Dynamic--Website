@@ -23,10 +23,12 @@ class loginDAO{
 
                 if($row = $result->fetch_assoc()){
 
-                  $client->setId($row["id"]); 
+                  $client->setId($row["iduser"]); 
+                  $client->setCard($row["idcard"]);
                   $client->setNom($row["nom"]);   
                   $client->setPrenom($row["prenom"]); 
                   $client->setEmail($row["email"]); 
+                  $client->setAdresse($row['adresse']);
                   $client->setTelephone($row["telephone"]); 
                   $client->setPassword($row["password"]); 
                     

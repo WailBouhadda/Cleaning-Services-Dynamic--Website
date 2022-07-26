@@ -12,7 +12,7 @@ class registerDAO{
             $test = 0;
             $this->DB = new DBconnection;
 
-            $clientexistSQL = "SELECT * FROM users WHERE email = '".$c->getEmail()."' and telephone = '".$c->getTelephone()."'";
+            $clientexistSQL = "SELECT * FROM users WHERE email = '".$c->getEmail()."'";
                 
             $result = $this->DB->executeSQL($clientexistSQL);
 

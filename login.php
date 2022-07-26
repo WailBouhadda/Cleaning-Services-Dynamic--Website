@@ -64,7 +64,7 @@ if(isset($_POST['connexion'])){
 </head>
 <body>
 
-<?php include("navbar.php"); ?>
+<?php require_once("navbar.php"); ?>
 
 <div class="login">
   
