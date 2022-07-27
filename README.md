@@ -10,7 +10,7 @@
   <li>DATABASE : MYsql</li>
 </ul>
 
-## 3. Some Captures about this project:
+## 2. Some Captures about this project:
 
 <br>
 
@@ -123,7 +123,7 @@
 ![seances](https://user-images.githubusercontent.com/47559086/181364334-9e902e47-f5d5-4fde-b9f5-34a38907a3e0.PNG)
 
 
-## 4. Created by:
+## 3. Created by:
 
 #### - <a href="https://github.com/WailBouhadda">Wail Bouhadda</a>
 
