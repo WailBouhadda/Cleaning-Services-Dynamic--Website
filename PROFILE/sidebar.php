@@ -79,7 +79,7 @@
 					</li>
 
 					<li class="<?php if($page === "MES SEANCES"){ echo "active"; }; ?>">
-						<a href="calendar.html">
+						<a href="messeances.php">
 							<i class="menu-icon fa fa-calendar"></i>
 
 							<span class="menu-text">
@@ -91,7 +91,7 @@
 					</li>
 
 					<li class="<?php if($page === "ASSISTANCE"){ echo "active"; }; ?>">
-						<a href="gallery.html">
+						<a href="assitance.php">
 							<i class="menu-icon fa fa-headset"></i>
 							<span class="menu-text"> Assistance </span>
 						</a>
@@ -114,7 +114,7 @@
 
 						<ul class="submenu">
 							<li class="<?php if($page === "PROFILE"){ echo "active"; }; ?>">
-								<a href="faq.html">
+								<a href="profile.php">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Profile
 								</a>
@@ -123,7 +123,7 @@
 							</li>
 
 							<li class="<?php if($page === "Settings"){ echo "active"; }; ?>">
-								<a href="error-404.html">
+								<a href="settings.php">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Settings
 								</a>

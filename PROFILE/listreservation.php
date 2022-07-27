@@ -120,7 +120,7 @@ if($client != null){
 								<a href="#">Home</a>
 							</li>
 
-							<li class="active">Ajouter Reservation</li>
+							<li class="active">Liste Reservations</li>
 						</ul><!-- /.breadcrumb -->
 
 						<!-- #section:basics/content.searchbox -->
@@ -156,7 +156,7 @@ if($client != null){
 											<div class="pull-right tableTools-container"></div>
 										</div>
 										<div class="table-header">
-                                            Vous pouvez trouver toutes les sessions terminées sur <a style="color:white; font-weight:600;" href="messeances.php">Mes Seances</a> 
+                                            Vous pouvez trouver toutes les seances terminées sur <a style="color:white; font-weight:600;" href="messeances.php">Mes Seances</a> 
 										</div>
 
 										<!-- div.table-responsive -->
