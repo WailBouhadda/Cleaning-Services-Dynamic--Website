@@ -2,7 +2,12 @@
 
 ## 1. Presentation:
 <ul>
-<li>Cleaning Services Dynamic Website with a user control panel and a back-office (adin control panel)</li>
+  <li>Cleaning Services Dynamic Website with a user control panel and a back-office (admin control panel)</li>
+  <li>For the Website it's a custom website made from scratch</li>
+  <li>For the User and Admin control panel i used aceadmin </li>
+  <li>Front-end : HTML, CSS ,JS</li>
+  <li>Back-end : PHP</li>
+  <li>DATABASE : MYsql</li>
 </ul>
 
 ## 3. Some Captures about this project:
