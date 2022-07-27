@@ -5,6 +5,7 @@ require("../entities/client.php");
 
 $page = "SETTINGS";
 
+$error = null;
 $DB = new DBconnection;
 
 session_start();
@@ -16,59 +17,28 @@ $client = $_SESSION['client'];
 if($client != null){
 
   $idclient = $client->getId();
-  $idcard = $client->getIDcard();
+  $idcard = $client->getIdcard();
   $nom = $client->getNom();
   $prenom = $client->getPrenom();
+  $adresse = $client->getAdresse();
   $email = $client->getEmail();
   $telephone = $client->getTelephone();
-  $adresse = $client->getAdresse();
   $password = $client->getPassword();
 
-  $today = date('Y-m-d');
+}else{
 
-  /* get nbr seances */
-  $seancesSQL = "SELECT count(*) FROM reservation WHERE idclient = ".$idclient." AND datereservation < '".$today."'";
+  header("Location:../login.php");
 
-  $seances = $DB->executeSQL($seancesSQL);
-                                                        
-                                                    
-  if($seances->num_rows > 0){
-
-      if($row = $seances->fetch_assoc()){
-
-        $nbrseances = $row['count(*)'];
-        }
-    }
-
-/* /.get nbr seances */
-
-
-  /* get nbr reservations */
-  $reservationsSQL = "SELECT count(*) FROM reservation WHERE idclient = ".$idclient." AND dateseance > '".$today."'";
-
-  $reservations = $DB->executeSQL($reservationsSQL);
-                                                        
-                                                    
-  if($reservations->num_rows > 0){
-
-      if($row = $reservations->fetch_assoc()){
-
-        $nbrreservations = $row['count(*)'];
-        }
-    }
-
-/* /.get nbr reservations */
-
+}
 
 
 if(isset($_POST['MODIFIERINFOS'])){
 
-$c = new client;
+
+	$c = new client;
 
     /* idcard handling */
     if($_FILES['file']['error'] === 4){
-
-        echo "<script> alert('Image ne pas trouvez');</script>";
 		$newImaeName = $idcard;
     }else{
 
@@ -91,78 +61,62 @@ $c = new client;
 
             move_uploaded_file($tmpName, '../idcards/' . $newImaeName);
 
-
-                     
-
         }
          /* /.idcard handling */
-
     }
 
+				  /* client infos */
+				  $c->setId($idclient);
+				  $c->setIdcard($newImaeName);   
+				  $cnom = $_POST['nom'];
+				  $c->setNom($cnom);
+				  $cprenom = $_POST['prenom'];
+				  $c->setPrenom($cprenom);
+				  $cemail = $_POST['email'];
+				  $c->setEmail($cemail);
+				  $ctelephone = $_POST['telephone'];
+				  $c->setTelephone($ctelephone);
+				  $cadresse = $_POST['adresse'];
+				  $c->setAdresse($cadresse);
+				  $c->setPassword($password);
 	
-                /* get reservation data */
-
-                /* client infos */
-				$c->setIdcard($newImaeName);   
-                $cnom = $_POST['nom'];
-                $c->setNom($cnom);
-                $cprenom = $_POST['prenom'];
-                $c->setPrenom($cprenom);
-                $cemail = $_POST['email'];
-                $c->setEmail($cemail);
-                $ctelephone = $_POST['telephone'];
-                $c->setTelephone($ctelephone);
-                $cadresse = $_POST['adresse'];
-                $c->setAdresse($cadresse);
-
-                
-
-                /* /.client infos */
-
-				$clientSQL = "";
-
-
-                    if($_POST['Apassword'] == $password){
-
-                        $cpassword = $_POST['Npassword'];
-                        $c->setPassword($cpassword);
-
-                        $clientSQL = "UPDATE users SET idcard = '".$newImaeName."', nom = '".$cnom."', prenom = '".$cprenom."', email = '".$cemail."', adresse = '".$cadresse."', telephone = '".$ctelephone."', password = '".$cpassword."'";
-
-                    }else{
-
-                        $clientSQL = "UPDATE users SET idcard = '".$newImaeName."', nom = '".$cnom."', prenom = '".$cprenom."', email = '".$cemail."', adresse = '".$cadresse."', telephone = '".$ctelephone."'";
-
-                    }
-
-
-
-				$result = $DB->executeSQL($clientSQL); 
-
-
-                if($result){
-
-					session_start();
-                $_SESSION['client'] = $c;
-                header("Location:settings.php");
-                
-                }else{
-
-                }
-
-
+	
+				  $clientSQL = "UPDATE users SET idcard = '".$newImaeName."', nom = '".$cnom."',
+				  prenom = '".$cprenom."', email = '".$cemail."', adresse = '".$cadresse."', 
+				  telephone = '".$ctelephone."' WHERE iduser = ".$idclient;
+						 
+				  $result = $DB->executeSQL($clientSQL); 
+	
+				  $_SESSION['client'] = $c;
+              
 }
 
 
 
+if(isset($_POST['MODIFIERMDP'])){
 
+	$c = new client;
 
+	$Apass = $_POST['amdp'];
+	$Npass = $_POST['nmdp'];
 
-}else{
+	if(strcmp($Apass,$password) === 0){
 
-  header("Location:../login.php");
+		$clientSQL = "UPDATE users SET password = '".$Npass."' WHERE iduser = ".$idclient;
 
+		$result = $DB->executeSQL($clientSQL); 
+
+		$client->setPassword($Npass);
+
+		$_SESSION['client'] = $client;
+
+		$error = 0;
+	}else{
+		$error = -1; 
+	}
 }
+
+
 
 ?>
 
@@ -183,16 +137,21 @@ $c = new client;
 		   <script src="https://kit.fontawesome.com/e2991dfebd.js" crossorigin="anonymous"></script>   
     <!-- /.fonts awesome -->
 
+
+    <!-- page specific plugin styles -->
+		<link rel="stylesheet" href="components/_mod/jquery-ui.custom/jquery-ui.custom.css" />
+		<link rel="stylesheet" href="components/chosen/chosen.css" />
+		<link rel="stylesheet" href="components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" href="components/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" href="components/bootstrap-daterangepicker/daterangepicker.css" />
+		<link rel="stylesheet" href="components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" />
+
+
 		<!-- bootstrap & fontawesome -->
 		<link rel="stylesheet" href="assets/css/bootstrap.css" />
 		<link rel="stylesheet" href="components/font-awesome/css/font-awesome.css" />
 
 		<!-- page specific plugin styles -->
-		<link rel="stylesheet" href="components/_mod/jquery-ui.custom/jquery-ui.custom.css" />
-		<link rel="stylesheet" href="components/jquery.gritter/css/jquery.gritter.css" />
-		<link rel="stylesheet" href="components/select2/dist/css/select2.css" />
-		<link rel="stylesheet" href="components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
-		<link rel="stylesheet" href="components/_mod/x-editable/bootstrap-editable.css" />
 
     
 		<!-- text fonts -->
@@ -278,151 +237,161 @@ $c = new client;
 								</small>
 							</h1>
 						</div><!-- /.page-header -->
-                        <div class="space-30"></div>
+
 						<!-- /section:settings.box -->
 						<div class="row">
-							<div class="col-xs-12">
-								<!-- PAGE CONTENT BEGINS -->
-								<div class="">
-									<div id="user-profile-3" class="user-profile row">
-										<div class="col-sm-offset-1 col-sm-10">
-
-											<form method="post" enctype="multipart/form-data" class="form-horizontal">
-												<div class="tabbable">
-													<ul class="nav nav-tabs padding-16">
-														<li class="active">
-															<a data-toggle="tab" href="#edit-basic">
-																<i class="green ace-icon fa fa-pencil-square-o bigger-125"></i>
-																Basic Info
-															</a>
-														</li>
-
-														<li>
-															<a data-toggle="tab" href="#edit-password">
-																<i class="blue ace-icon fa fa-key bigger-125"></i>
-																Password
-															</a>
-														</li>
-													</ul>
-
-													<div class="tab-content profile-edit-tab-content">
-														<div id="edit-basic" class="tab-pane in active">
-															<h4 class="header blue bolder smaller">General</h4>
-
-															<div class="row">
-																<div class="col-xs-12 col-sm-4">
-																	<input type="file" id="file" name="file" />
-																</div>
-
-																<div class="vspace-12-sm"></div>
-
-																<div class="col-xs-12 col-sm-8">
-																	<div class="form-group">
-																		<label class="col-sm-4 control-label no-padding-right" for="nom">Nom</label>
-
-																		<div class="col-sm-8">
-																			<input class="col-xs-12 col-sm-10" type="text" id="nom" name="nom" placeholder="Nom..." value="<?php echo $nom;?>" />
-																		</div>
-																	</div>
-
-																	<div class="space-4"></div>
-
-																	<div class="form-group">
-																		<label class="col-sm-4 control-label no-padding-right" for="prenom">Prenom</label>
-
-																		<div class="col-sm-8">
-                                                                            <input class="col-xs-12 col-sm-10" type="text" id="prenom" name="prenom" placeholder="Prenom..." value="<?php echo $prenom;?>" />
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-															<div class="space"></div>
-															<h4 class="header blue bolder smaller">Contact</h4>
-
-															<div class="form-group">
-																<label class="col-sm-3 control-label no-padding-right" for="email">Email</label>
-
-																<div class="col-sm-9">
-																	<span class="input-icon input-icon-right">
-																		<input class="input-xxlarge" type="email" id="email" name="email" value="<?php echo $email;?>" />
-																		<i class="ace-icon fa fa-envelope"></i>
-																	</span>
-																</div>
-															</div>
-
-															<div class="space-4"></div>
-
-															<div class="form-group">
-																<label class="col-sm-3 control-label no-padding-right" for="adresse">Adresse</label>
-
-																<div class="col-sm-9">
-																	<span class="input-icon input-icon-right">
-																		<input class="input-xxlarge" type="text" id="adresse" name="adresse" value="<?php echo $adresse;?>" />
-																		<i class="ace-icon fa fa-location-dot"></i>
-																	</span>
-																</div>
-															</div>
-
-															<div class="space-4"></div>
-
-															<div class="form-group">
-																<label class="col-sm-3 control-label no-padding-right" for="telephone">Phone</label>
-
-																<div class="col-sm-9">
-																	<span class="input-icon input-icon-right">
-																		<input class="input-xxlarge"  type="text" id="telephone" name="telephone" value="<?php echo $telephone;?>" />
-																		<i class="ace-icon fa fa-phone fa-flip-horizontal"></i>
-																	</span>
-																</div>
-															</div>
-														</div>
-
-														<div id="edit-password" class="tab-pane">
-															<div class="space-10"></div>
-
-															<div class="form-group">
-																<label class="col-sm-3 control-label no-padding-right" for="Apassword">Ancien Mot de passe</label>
-
-																<div class="col-sm-9">
-																	<input type="password" name="Apassword" id="Apassword" />
-																</div>
-															</div>
-
-															<div class="space-4"></div>
-
-															<div class="form-group">
-																<label class="col-sm-3 control-label no-padding-right" for="Npassword">Nouveau Mot de passe</label>
-
-																<div class="col-sm-9">
-																	<input type="password" name="Npassword" id="Npassword" />
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div class="clearfix form-actions">
-													<div class="col-md-offset-3 col-md-9">
-														<button class="btn btn-info" type="submit" name="MODIFIERINFOS">
-															<i class="ace-icon fa fa-check bigger-110"></i>
-															Enregistrer
-														</button>
-
-														&nbsp; &nbsp;
-														<button class="btn" type="reset">
-															<i class="ace-icon fa fa-undo bigger-110"></i>
-															Reainstaliser
-														</button>
-													</div>
-												</div>
-											</form>
-										</div><!-- /.span -->
-									</div><!-- /.user-profile -->
+							<h3 class="header smaller lighter blue">
+								Informations Generale
+							</h3>
+							<form method="post" enctype="multipart/form-data">
+								<div class="row">
+									<!-- #section:plugins/input.chosen -->
+									<div class="col-sm-6">
+										<label for="nom">Nom</label>
+										<br />
+										<input class="form-control" type="text" name="nom" id="nom" value="<?php echo $nom;?>">
+									</div>
+									<!-- #section:plugins/input.chosen -->
+									<div class="col-sm-6">
+										<label for="prenom">Prenom</label>
+										<br />
+										<input class="form-control" type="text" name="prenom" id="prenom" value="<?php echo $prenom;?>">
+									</div>
 								</div>
-								<!-- PAGE CONTENT ENDS -->
-							</div><!-- /.col -->
-						</div><!-- /.row -->
+								<hr>
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="adresse">
+											Adresse
+										</label>
+										<div class="input-group">
+											<input class="form-control" type="text" id="adresse" name="adresse" value="<?php echo $adresse;?>" />
+											<span class="input-group-addon">
+												<i class="ace-icon fa fa-location-dot" aria-hidden="true"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<!-- #section:plugins/input.chosen -->
+									<div class="col-sm-6">
+										<label for="email">
+											Email
+										</label>
+										<div class="input-group">
+											<input class="form-control" type="text" id="email" name="email" value="<?php echo $email;?>" />
+											<span class="input-group-addon">
+												<i class="ace-icon fa fa-envelope" aria-hidden="true"></i>
+											</span>
+										</div>
+									</div>
+									<!-- #section:plugins/input.chosen -->
+									<div class="col-sm-6">
+										<label for="telephone">
+											Telephone
+										</label>
+										<div class="input-group">
+											<input class="form-control" type="text" id="telephone" name="telephone" value="<?php echo $telephone;?>" />
+											<span class="input-group-addon">
+												<i class="ace-icon fa fa-phone fa-flip-horizontal"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-xs-12">
+										<!-- #section:custom/file-input -->
+										<label for="">Carte D'identite</label>
+										<label class="ace-file-input">
+											<input type="file" id="id-input-file-2" name="file" if="file">
+											<span class="ace-file-container" data-title="Choose">
+												<span class="ace-file-name" data-title="No File ..."><i class=" ace-icon fa fa-upload"></i></span>
+											</span>
+											<a class="remove" href="#"><i class=" ace-icon fa fa-times"></i></a>
+										</label>
+									</div>
+								</div>
+								<hr>
+								<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button class="btn btn-info" type="submit" name="MODIFIERINFOS">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												MODIFIER
+											</button>
+
+											&nbsp; &nbsp; &nbsp;
+											<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												REANSTALISER
+											</button>
+										</div>
+								</div>
+							</form>
+						</div>
+                        <!-- /.row -->
+						<!-- /section:settings.box -->
+						<div class="row">
+							<h3 class="header smaller lighter blue">
+								Mot De Passe
+							</h3>
+							<hr>
+							<?php if($error === -1){ 
+
+							?>
+								<p style="color:red;">MOT DE PASSE INCORECT</p>
+								<hr>
+							<?php
+									}
+							?>
+						
+							<form method="post">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="nmdp">
+											Nouveau Mot De Passe
+										</label>
+										<div class="input-group">
+											<input class="form-control" type="password" id="nmdp" name="nmdp" />
+											<span class="input-group-addon">
+												<i class="ace-icon fa fa-key" aria-hidden="true"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="amdp">
+											Ancien Mot De Passe
+										</label>
+										<div class="input-group">
+											<input class="form-control" type="password" id="amdp" name="amdp" />
+											<span class="input-group-addon">
+												<i class="ace-icon fa fa-key" aria-hidden="true"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button class="btn btn-info" type="submit" name="MODIFIERMDP">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												MODIFIER
+											</button>
+
+											&nbsp; &nbsp; &nbsp;
+											<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												REANSTALISER
+											</button>
+										</div>
+								</div>
+							</form>
+						</div>
+                        <!-- /.row -->
 					</div><!-- /.page-content -->
 				</div>
 			</div>
@@ -433,7 +402,7 @@ $c = new client;
 <!-- /.main-container -->
 
 
-			<!-- basic scripts -->
+		<!-- basic scripts -->
 
 		<!--[if !IE]> -->
 		<script src="components/jquery/dist/jquery.js"></script>
@@ -441,7 +410,19 @@ $c = new client;
 		<!-- <![endif]-->
 
 		<!--[if IE]>
-<script src="components/jquery.1x/dist/jquery.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+        <script src="components/jquery.1x/dist/jquery.js"></script>
 <![endif]-->
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
@@ -455,17 +436,19 @@ $c = new client;
 		<![endif]-->
 		<script src="components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
 		<script src="components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
-		<script src="components/jquery.gritter/js/jquery.gritter.js"></script>
-		<script src="components/bootbox.js/bootbox.js"></script>
-		<script src="components/_mod/easypiechart/jquery.easypiechart.js"></script>
-		<script src="components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
-		<script src="components/jquery.hotkeys/index.js"></script>
-		<script src="components/_mod/bootstrap-wysiwyg/bootstrap-wysiwyg.js"></script>
-		<script src="components/select2/dist/js/select2.js"></script>
+		<script src="components/chosen/chosen.jquery.js"></script>
 		<script src="components/fuelux/js/spinbox.js"></script>
-		<script src="components/_mod/x-editable/bootstrap-editable.js"></script>
-		<script src="components/_mod/x-editable/ace-editable.js"></script>
+		<script src="components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+		<script src="components/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script src="components/moment/moment.js"></script>
+		<script src="components/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+		<script src="components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+		<script src="components/jquery-knob/js/jquery.knob.js"></script>
+		<script src="components/autosize/dist/autosize.js"></script>
+		<script src="components/jquery-inputlimiter/jquery.inputlimiter.js"></script>
 		<script src="components/jquery.maskedinput/dist/jquery.maskedinput.js"></script>
+		<script src="components/_mod/bootstrap-tag/bootstrap-tag.js"></script>
 
 		<!-- ace scripts -->
 		<script src="assets/js/src/elements.scroller.js"></script>
@@ -492,89 +475,455 @@ $c = new client;
 		<script src="assets/js/src/ace.widget-on-reload.js"></script>
 		<script src="assets/js/src/ace.searchbox-autocomplete.js"></script>
 
-
-        <!-- inline scripts related to this page -->
-		<script type="text/javascript">
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
 			jQuery(function($) {
-			
-				//editables on first profile page
-				$.fn.editable.defaults.mode = 'inline';
-				$.fn.editableform.loading = "<div class='editableform-loading'><i class='ace-icon fa fa-spinner fa-spin fa-2x light-blue'></i></div>";
-			    $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="ace-icon fa fa-check"></i></button>'+
-			                                '<button type="button" class="btn editable-cancel"><i class="ace-icon fa fa-times"></i></button>';    
-
-				//////////////////////////////
-				$('#profile-feed-1').ace_scroll({
-					height: '250px',
-					mouseWheelLock: true,
-					alwaysVisible : true
+				$('#id-disable-check').on('click', function() {
+					var inp = $('#form-input-readonly').get(0);
+					if(inp.hasAttribute('disabled')) {
+						inp.setAttribute('readonly' , 'true');
+						inp.removeAttribute('disabled');
+						inp.value="This text field is readonly!";
+					}
+					else {
+						inp.setAttribute('disabled' , 'disabled');
+						inp.removeAttribute('readonly');
+						inp.value="This text field is disabled!";
+					}
 				});
 			
-				$('a[ data-original-title]').tooltip();
 			
-				$('.easy-pie-chart.percentage').each(function(){
-				var barColor = $(this).data('color') || '#555';
-				var trackColor = '#E2E2E2';
-				var size = parseInt($(this).data('size')) || 72;
-				$(this).easyPieChart({
-					barColor: barColor,
-					trackColor: trackColor,
-					scaleColor: false,
-					lineCap: 'butt',
-					lineWidth: parseInt(size/10),
-					animate:false,
-					size: size
-				}).css('color', barColor);
+				if(!ace.vars['touch']) {
+					$('.chosen-select').chosen({allow_single_deselect:true}); 
+					//resize the chosen on window resize
+			
+					$(window)
+					.off('resize.chosen')
+					.on('resize.chosen', function() {
+						$('.chosen-select').each(function() {
+							 var $this = $(this);
+							 $this.next().css({'width': $this.parent().width()});
+						})
+					}).trigger('resize.chosen');
+					//resize chosen on sidebar collapse/expand
+					$(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+						if(event_name != 'sidebar_collapsed') return;
+						$('.chosen-select').each(function() {
+							 var $this = $(this);
+							 $this.next().css({'width': $this.parent().width()});
+						})
+					});
+			
+			
+					$('#chosen-multiple-style .btn').on('click', function(e){
+						var target = $(this).find('input[type=radio]');
+						var which = parseInt(target.val());
+						if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
+						 else $('#form-field-select-4').removeClass('tag-input-style');
+					});
+				}
+			
+			
+				$('[data-rel=tooltip]').tooltip({container:'body'});
+				$('[data-rel=popover]').popover({container:'body'});
+			
+				autosize($('textarea[class*=autosize]'));
+				
+				$('textarea.limited').inputlimiter({
+					remText: '%n character%s remaining...',
+					limitText: 'max allowed : %n.'
 				});
-			  
-				///////////////////////////////////////////
 			
-				///////////////////////////////////////////
-				$('#user-profile-3')
-				.find('input[type=file]').ace_file_input({
-					style:'well',
-					btn_choose:'Change avatar',
-					btn_change:null,
-					no_icon:'ace-icon fa fa-picture-o',
-					thumbnail:'large',
-					droppable:true,
-					
-					allowExt: ['jpg', 'jpeg', 'png', 'gif'],
-					allowMime: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
-				})
-				.end().find('button[type=reset]').on(ace.click_event, function(){
-					$('#user-profile-3 input[type=file]').ace_file_input('reset_input');
-				})
-				.end().find('.date-picker').datepicker().next().on(ace.click_event, function(){
-					$(this).prev().focus();
-				})
+				$.mask.definitions['~']='[+-]';
+				$('.input-mask-date').mask('99/99/9999');
 				$('.input-mask-phone').mask('(999) 999-9999');
+				$('.input-mask-eyescript').mask('~9.99 ~9.99 999');
+				$(".input-mask-product").mask("a*-999-a999",{placeholder:" ",completed:function(){alert("You typed the following: "+this.val());}});
 			
-				$('#user-profile-3').find('input[type=file]').ace_file_input('show_file_list', [{type: 'image', name: $('#avatar').attr('src')}]);
 			
 			
-				////////////////////
-				//change profile
-				$('[data-toggle="buttons"] .btn').on('click', function(e){
-					var target = $(this).find('input[type=radio]');
-					var which = parseInt(target.val());
-					$('.user-profile').parent().addClass('hide');
-					$('#user-profile-'+which).parent().removeClass('hide');
+				$( "#input-size-slider" ).css('width','200px').slider({
+					value:1,
+					range: "min",
+					min: 1,
+					max: 8,
+					step: 1,
+					slide: function( event, ui ) {
+						var sizing = ['', 'input-sm', 'input-lg', 'input-mini', 'input-small', 'input-medium', 'input-large', 'input-xlarge', 'input-xxlarge'];
+						var val = parseInt(ui.value);
+						$('#form-field-4').attr('class', sizing[val]).attr('placeholder', '.'+sizing[val]);
+					}
+				});
+			
+				$( "#input-span-slider" ).slider({
+					value:1,
+					range: "min",
+					min: 1,
+					max: 12,
+					step: 1,
+					slide: function( event, ui ) {
+						var val = parseInt(ui.value);
+						$('#form-field-5').attr('class', 'col-xs-'+val).val('.col-xs-'+val);
+					}
+				});
+			
+			
+				
+				//"jQuery UI Slider"
+				//range slider tooltip example
+				$( "#slider-range" ).css('height','200px').slider({
+					orientation: "vertical",
+					range: true,
+					min: 0,
+					max: 100,
+					values: [ 17, 67 ],
+					slide: function( event, ui ) {
+						var val = ui.values[$(ui.handle).index()-1] + "";
+			
+						if( !ui.handle.firstChild ) {
+							$("<div class='tooltip right in' style='display:none;left:16px;top:-6px;'><div class='tooltip-arrow'></div><div class='tooltip-inner'></div></div>")
+							.prependTo(ui.handle);
+						}
+						$(ui.handle.firstChild).show().children().eq(1).text(val);
+					}
+				}).find('span.ui-slider-handle').on('blur', function(){
+					$(this.firstChild).hide();
 				});
 				
 				
+				$( "#slider-range-max" ).slider({
+					range: "max",
+					min: 1,
+					max: 10,
+					value: 2
+				});
 				
-				/////////////////////////////////////
+				$( "#slider-eq > span" ).css({width:'90%', 'float':'left', margin:'15px'}).each(function() {
+					// read initial values from markup and remove that
+					var value = parseInt( $( this ).text(), 10 );
+					$( this ).empty().slider({
+						value: value,
+						range: "min",
+						animate: true
+						
+					});
+				});
+				
+				$("#slider-eq > span.ui-slider-purple").slider('disable');//disable third item
+			
+				
+				$('#id-input-file-1 , #id-input-file-2').ace_file_input({
+					no_file:'No File ...',
+					btn_choose:'Choose',
+					btn_change:'Change',
+					droppable:false,
+					onchange:null,
+					thumbnail:false //| true | large
+					//whitelist:'gif|png|jpg|jpeg'
+					//blacklist:'exe|php'
+					//onchange:''
+					//
+				});
+				//pre-show a file name, for example a previously selected file
+				//$('#id-input-file-1').ace_file_input('show_file_list', ['myfile.txt'])
+			
+			
+				$('#id-input-file-3').ace_file_input({
+					style: 'well',
+					btn_choose: 'Drop files here or click to choose',
+					btn_change: null,
+					no_icon: 'ace-icon fa fa-cloud-upload',
+					droppable: true,
+					thumbnail: 'small'//large | fit
+					//,icon_remove:null//set null, to hide remove/reset button
+					/**,before_change:function(files, dropped) {
+						//Check an example below
+						//or examples/file-upload.html
+						return true;
+					}*/
+					/**,before_remove : function() {
+						return true;
+					}*/
+					,
+					preview_error : function(filename, error_code) {
+						//name of the file that failed
+						//error_code values
+						//1 = 'FILE_LOAD_FAILED',
+						//2 = 'IMAGE_LOAD_FAILED',
+						//3 = 'THUMBNAIL_FAILED'
+						//alert(error_code);
+					}
+			
+				}).on('change', function(){
+					//console.log($(this).data('ace_input_files'));
+					//console.log($(this).data('ace_input_method'));
+				});
+				
+				
+				//$('#id-input-file-3')
+				//.ace_file_input('show_file_list', [
+					//{type: 'image', name: 'name of image', path: 'http://path/to/image/for/preview'},
+					//{type: 'file', name: 'hello.txt'}
+				//]);
+			
+				
+				
+			
+				//dynamically change allowed formats by changing allowExt && allowMime function
+				$('#id-file-format').removeAttr('checked').on('change', function() {
+					var whitelist_ext, whitelist_mime;
+					var btn_choose
+					var no_icon
+					if(this.checked) {
+						btn_choose = "Drop images here or click to choose";
+						no_icon = "ace-icon fa fa-picture-o";
+			
+						whitelist_ext = ["jpeg", "jpg", "png", "gif" , "bmp"];
+						whitelist_mime = ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/bmp"];
+					}
+					else {
+						btn_choose = "Drop files here or click to choose";
+						no_icon = "ace-icon fa fa-cloud-upload";
+						
+						whitelist_ext = null;//all extensions are acceptable
+						whitelist_mime = null;//all mimes are acceptable
+					}
+					var file_input = $('#id-input-file-3');
+					file_input
+					.ace_file_input('update_settings',
+					{
+						'btn_choose': btn_choose,
+						'no_icon': no_icon,
+						'allowExt': whitelist_ext,
+						'allowMime': whitelist_mime
+					})
+					file_input.ace_file_input('reset_input');
+					
+					file_input
+					.off('file.error.ace')
+					.on('file.error.ace', function(e, info) {
+						//console.log(info.file_count);//number of selected files
+						//console.log(info.invalid_count);//number of invalid files
+						//console.log(info.error_list);//a list of errors in the following format
+						
+						//info.error_count['ext']
+						//info.error_count['mime']
+						//info.error_count['size']
+						
+						//info.error_list['ext']  = [list of file names with invalid extension]
+						//info.error_list['mime'] = [list of file names with invalid mimetype]
+						//info.error_list['size'] = [list of file names with invalid size]
+						
+						
+						/**
+						if( !info.dropped ) {
+							//perhapse reset file field if files have been selected, and there are invalid files among them
+							//when files are dropped, only valid files will be added to our file array
+							e.preventDefault();//it will rest input
+						}
+						*/
+						
+						
+						//if files have been selected (not dropped), you can choose to reset input
+						//because browser keeps all selected files anyway and this cannot be changed
+						//we can only reset file field to become empty again
+						//on any case you still should check files with your server side script
+						//because any arbitrary file can be uploaded by user and it's not safe to rely on browser-side measures
+					});
+					
+					
+					/**
+					file_input
+					.off('file.preview.ace')
+					.on('file.preview.ace', function(e, info) {
+						console.log(info.file.width);
+						console.log(info.file.height);
+						e.preventDefault();//to prevent preview
+					});
+					*/
+				
+				});
+			
+				$('#spinner1').ace_spinner({value:0,min:0,max:200,step:10, btn_up_class:'btn-info' , btn_down_class:'btn-info'})
+				.closest('.ace-spinner')
+				.on('changed.fu.spinbox', function(){
+					//console.log($('#spinner1').val())
+				}); 
+				$('#spinner2').ace_spinner({value:0,min:0,max:10000,step:100, touch_spinner: true, icon_up:'ace-icon fa fa-caret-up bigger-110', icon_down:'ace-icon fa fa-caret-down bigger-110'});
+				$('#spinner3').ace_spinner({value:0,min:-100,max:100,step:10, on_sides: true, icon_up:'ace-icon fa fa-plus bigger-110', icon_down:'ace-icon fa fa-minus bigger-110', btn_up_class:'btn-success' , btn_down_class:'btn-danger'});
+				$('#spinner4').ace_spinner({value:0,min:-100,max:100,step:10, on_sides: true, icon_up:'ace-icon fa fa-plus', icon_down:'ace-icon fa fa-minus', btn_up_class:'btn-purple' , btn_down_class:'btn-purple'});
+			
+				//$('#spinner1').ace_spinner('disable').ace_spinner('value', 11);
+				//or
+				//$('#spinner1').closest('.ace-spinner').spinner('disable').spinner('enable').spinner('value', 11);//disable, enable or change value
+				//$('#spinner1').closest('.ace-spinner').spinner('value', 0);//reset to 0
+			
+			
+				//datepicker plugin
+				//link
+				$('.date-picker').datepicker({
+					autoclose: true,
+					todayHighlight: true
+				})
+				//show datepicker when clicking on the icon
+				.next().on(ace.click_event, function(){
+					$(this).prev().focus();
+				});
+			
+				//or change it into a date range picker
+				$('.input-daterange').datepicker({autoclose:true});
+			
+			
+				//to translate the daterange picker, please copy the "examples/daterange-fr.js" contents here before initialization
+				$('input[name=date-range-picker]').daterangepicker({
+					'applyClass' : 'btn-sm btn-success',
+					'cancelClass' : 'btn-sm btn-default',
+					locale: {
+						applyLabel: 'Apply',
+						cancelLabel: 'Cancel',
+					}
+				})
+				.prev().on(ace.click_event, function(){
+					$(this).next().focus();
+				});
+			
+			
+				$('#timepicker1').timepicker({
+					minuteStep: 1,
+					showSeconds: true,
+					showMeridian: false,
+					disableFocus: true,
+					icons: {
+						up: 'fa fa-chevron-up',
+						down: 'fa fa-chevron-down'
+					}
+				}).on('focus', function() {
+					$('#timepicker1').timepicker('showWidget');
+				}).next().on(ace.click_event, function(){
+					$(this).prev().focus();
+				});
+				
+				
+			
+				
+				if(!ace.vars['old_ie']) $('#date-timepicker1').datetimepicker({
+				 //format: 'MM/DD/YYYY h:mm:ss A',//use this option to display seconds
+				 icons: {
+					time: 'fa fa-clock-o',
+					date: 'fa fa-calendar',
+					up: 'fa fa-chevron-up',
+					down: 'fa fa-chevron-down',
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-arrows ',
+					clear: 'fa fa-trash',
+					close: 'fa fa-times'
+				 }
+				}).next().on(ace.click_event, function(){
+					$(this).prev().focus();
+				});
+				
+			
+				$('#colorpicker1').colorpicker();
+				//$('.colorpicker').last().css('z-index', 2000);//if colorpicker is inside a modal, its z-index should be higher than modal'safe
+			
+				$('#simple-colorpicker-1').ace_colorpicker();
+				//$('#simple-colorpicker-1').ace_colorpicker('pick', 2);//select 2nd color
+				//$('#simple-colorpicker-1').ace_colorpicker('pick', '#fbe983');//select #fbe983 color
+				//var picker = $('#simple-colorpicker-1').data('ace_colorpicker')
+				//picker.pick('red', true);//insert the color if it doesn't exist
+			
+			
+				$(".knob").knob();
+				
+				
+				var tag_input = $('#form-field-tags');
+				try{
+					tag_input.tag(
+					  {
+						placeholder:tag_input.attr('placeholder'),
+						//enable typeahead by specifying the source array
+						source: ace.vars['US_STATES'],//defined in ace.js >> ace.enable_search_ahead
+						/**
+						//or fetch data from database, fetch those that match "query"
+						source: function(query, process) {
+						  $.ajax({url: 'remote_source.php?q='+encodeURIComponent(query)})
+						  .done(function(result_items){
+							process(result_items);
+						  });
+						}
+						*/
+					  }
+					)
+			
+					//programmatically add/remove a tag
+					var $tag_obj = $('#form-field-tags').data('tag');
+					$tag_obj.add('Programmatically Added');
+					
+					var index = $tag_obj.inValues('some tag');
+					$tag_obj.remove(index);
+				}
+				catch(e) {
+					//display a textarea for old IE, because it doesn't support this plugin or another one I tried!
+					tag_input.after('<textarea id="'+tag_input.attr('id')+'" name="'+tag_input.attr('name')+'" rows="3">'+tag_input.val()+'</textarea>').remove();
+					//autosize($('#form-field-tags'));
+				}
+				
+				
+				/////////
+				$('#modal-form input[type=file]').ace_file_input({
+					style:'well',
+					btn_choose:'Drop files here or click to choose',
+					btn_change:null,
+					no_icon:'ace-icon fa fa-cloud-upload',
+					droppable:true,
+					thumbnail:'large'
+				})
+				
+				//chosen plugin inside a modal will have a zero width because the select element is originally hidden
+				//and its width cannot be determined.
+				//so we set the width after modal is show
+				$('#modal-form').on('shown.bs.modal', function () {
+					if(!ace.vars['touch']) {
+						$(this).find('.chosen-container').each(function(){
+							$(this).find('a:first-child').css('width' , '210px');
+							$(this).find('.chosen-drop').css('width' , '210px');
+							$(this).find('.chosen-search input').css('width' , '200px');
+						});
+					}
+				})
+				/**
+				//or you can activate the chosen plugin after modal is shown
+				//this way select element becomes visible with dimensions and chosen works as expected
+				$('#modal-form').on('shown', function () {
+					$(this).find('.modal-chosen').chosen();
+				})
+				*/
+			
+				
+				
 				$(document).one('ajaxloadstart.page', function(e) {
-					//in ajax mode, remove remaining elements before leaving page
-					try {
-						$('.editable').editable('destroy');
-					} catch(e) {}
-					$('[class*=select2]').remove();
+					autosize.destroy('textarea[class*=autosize]')
+					
+					$('.limiterBox,.autosizejs').remove();
+					$('.daterangepicker.dropdown-menu,.colorpicker.dropdown-menu,.bootstrap-datetimepicker-widget.dropdown-menu').remove();
 				});
+			
 			});
 		</script>
 
+		<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+		<link rel="stylesheet" href="assets/css/ace.onpage-help.css" />
+		<link rel="stylesheet" href="docs/assets/js/themes/sunburst.css" />
+
+		<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+		<script src="assets/js/src/elements.onpage-help.js"></script>
+		<script src="assets/js/src/ace.onpage-help.js"></script>
+		<script src="docs/assets/js/rainbow.js"></script>
+		<script src="docs/assets/js/language/generic.js"></script>
+		<script src="docs/assets/js/language/html.js"></script>
+		<script src="docs/assets/js/language/css.js"></script>
+		<script src="docs/assets/js/language/javascript.js"></script>
 		
 </body>
 </html>

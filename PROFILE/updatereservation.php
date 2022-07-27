@@ -64,9 +64,9 @@ if(isset($_POST['MODIFIER'])){
 
 
 $typemenage = $_POST['typemenage'];
-$duree = $_POST['dureemenage'];
+$duree = $_POST['duree'];
 $ville = $_POST['ville'];
-$nbrpersonne = $_POST['nbrpersonnes'];
+$nbrpersonne = $_POST['nbrpersonne'];
 $datemenage = date('y-m-d',strtotime($_POST['dateseance']));
 $frequence = $_POST['frequence'];
 $autre = $_POST['autre'];
@@ -80,7 +80,7 @@ if(isset($_POST['outils'])){
 
 
 $updatereservationSQL = "UPDATE reservation SET typemenage = '".$typemenage."', duree = '".$duree."', ville = '".$ville."', adresse = '".$adresse."', nbrpersonne = '".$nbrpersonne."'
-                , dateseance = '".$datemenage."', frequence = '".$frequence."', idclient = '".$idclient."', autre = '".$autre."', outils =  '".$tools."' ";
+                , dateseance = '".$datemenage."', frequence = '".$frequence."', idclient = '".$idclient."', autre = '".$autre."', outils =  '".$tools."' WHERE idreservation = ".$idreservation;
                 
                 $test = $DB->executeSQL($updatereservationSQL);
 
