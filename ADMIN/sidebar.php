@@ -189,62 +189,31 @@
 				<div class="sidebar-menu">
 					<ul id="accordion-menu">
 						<li>
-							<a href="javascript:;" class="dropdown-toggle no-arrow">
+							<a href="dashboard.php" class="dropdown-toggle no-arrow">
 							<span class="micon bi bi-house"></span
 								><span class="mtext">Home</span>
 							</a>
 						</li>
 						<li class="dropdown">
 							<a href="javascript:;" class="dropdown-toggle">
-								<span class="micon bi bi-textarea-resize"></span
-								><span class="mtext">Forms</span>
-							</a>
-							<ul class="submenu">
-								<li><a href="form-basic.html">Form Basic</a></li>
-								<li>
-									<a href="advanced-components.html">Advanced Components</a>
-								</li>
-								<li><a href="form-wizard.html">Form Wizard</a></li>
-								<li><a href="html5-editor.html">HTML5 Editor</a></li>
-								<li><a href="form-pickers.html">Form Pickers</a></li>
-								<li><a href="image-cropper.html">Image Cropper</a></li>
-								<li><a href="image-dropzone.html">Image Dropzone</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="calendar.html" class="dropdown-toggle no-arrow">
-								<span class="micon bi bi-calendar4-week"></span
-								><span class="mtext">Calendar</span>
-							</a>
-						</li>
-						<li class="dropdown">
-							<a href="javascript:;" class="dropdown-toggle">
 								<span class="micon bi bi-archive"></span
-								><span class="mtext"> UI Elements </span>
+								><span class="mtext"> Reservations </span>
 							</a>
 							<ul class="submenu">
-								<li><a href="ui-buttons.html">Buttons</a></li>
-								<li><a href="ui-cards.html">Cards</a></li>
-								<li><a href="ui-cards-hover.html">Cards Hover</a></li>
-								<li><a href="ui-modals.html">Modals</a></li>
-								<li><a href="ui-tabs.html">Tabs</a></li>
-								<li>
-									<a href="ui-tooltip-popover.html">Tooltip &amp; Popover</a>
-								</li>
-								<li><a href="ui-sweet-alert.html">Sweet Alert</a></li>
-								<li><a href="ui-notification.html">Notification</a></li>
-								<li><a href="ui-timeline.html">Timeline</a></li>
-								<li><a href="ui-progressbar.html">Progressbar</a></li>
-								<li><a href="ui-typography.html">Typography</a></li>
-								<li><a href="ui-list-group.html">List group</a></li>
-								<li><a href="ui-range-slider.html">Range slider</a></li>
-								<li><a href="ui-carousel.html">Carousel</a></li>
+								<li><a href="reservations.php">Reservations</a></li>
+								<li><a href="seances.php">Seances</a></li>
 							</ul>
 						</li>
 						<li>
-							<a href="chat.html" class="dropdown-toggle no-arrow">
+							<a href="users.php" class="dropdown-toggle no-arrow">
+								<span class="micon bi bi-calendar4-week"></span
+								><span class="mtext">Users</span>
+							</a>
+						</li>
+						<li>
+							<a href="reclamatons.php" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-chat-right-dots"></span
-								><span class="mtext">Chat</span>
+								><span class="mtext">Reclamations</span>
 							</a>
 						</li>
 						<li>
@@ -256,8 +225,8 @@
 								><span class="mtext">Profile</span>
 							</a>
 							<ul class="submenu">
-								<li><a href="bootstrap-icon.html">Profile</a></li>
-								<li><a href="font-awesome.html">Settings</a></li>
+								<li><a href="profile.php">Profile</a></li>
+								<li><a href="profile.php">Settings</a></li>
 							</ul>
 						</li>
 					</ul>
