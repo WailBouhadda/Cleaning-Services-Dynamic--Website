@@ -19,6 +19,7 @@ if($admin != null){
 	$nom = $admin->getNom();
 	$prenom = $admin->getPrenom();
 	$email = $admin->getEmail();
+	$password = $admin->getPassword();
   
   }else{
   
@@ -26,7 +27,58 @@ if($admin != null){
   
   }
 
-  $today = date('Y-m-d');
+
+
+  
+if(isset($_POST['informations'])){
+
+
+	$a = new admin;
+
+				  /* client infos */
+				  $a->setId($idadmin);  
+				  $anom = $_POST['nom'];
+				  $a->setNom($anom);
+				  $aprenom = $_POST['prenom'];
+				  $a->setPrenom($aprenom);
+				  $aemail = $_POST['email'];
+				  $a->setEmail($aemail);
+	
+	
+				  $adminSQL = "UPDATE admin SET  nom = '".$anom."',
+				  prenom = '".$aprenom."', email = '".$aemail."' WHERE idadmin = ".$idadmin;
+						 
+				  $result = $DB->executeSQL($adminSQL); 
+	
+				  $_SESSION['admin'] = $a;
+              
+}
+
+
+
+if(isset($_POST['password'])){
+
+
+
+	$Apass = $_POST['amdp'];
+	$Npass = $_POST['nmdp'];
+
+	if(strcmp($Apass,$password) === 0){
+
+		$adminSQL = "UPDATE admin SET password = '".$Npass."' WHERE idadmin = ".$idadmin;
+
+		$result = $DB->executeSQL($adminSQL); 
+
+		$admin->setPassword($Npass);
+
+		$_SESSION['admin'] = $admin;
+
+		$error = 0;
+	}else{
+		$error = -1; 
+	}
+}
+
 
 
 
@@ -151,13 +203,6 @@ if($admin != null){
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-30">
 							<div class="pd-20 card-box height-100-p">
 								<div class="profile-photo">
-									<a
-										href="modal"
-										data-toggle="modal"
-										data-target="#modal"
-										class="edit-avatar"
-										><i class="fa fa-pencil"></i
-									></a>
 									<img
 										src="vendors/images/photo1.jpg"
 										alt=""
@@ -203,16 +248,16 @@ if($admin != null){
 										</div>
 									</div>
 								</div>
-								<h5 class="text-center h5 mb-0">Ross C. Lopez</h5>
+								<h5 class="text-center h5 mb-0"><?php echo $prenom." ".$nom; ?></h5>
 								<p class="text-center text-muted font-14">
-									Lorem ipsum dolor sit amet
+									<?php echo $password;?>
 								</p>
 								<div class="profile-info">
 									<h5 class="mb-20 h5 text-blue">Contact Information</h5>
 									<ul>
 										<li>
 											<span>Email Address:</span>
-											FerdinandMChilds@test.com
+											<?php echo $email; ?>
 										</li>
 										<li>
 											<span>Phone Number:</span>
@@ -220,7 +265,7 @@ if($admin != null){
 										</li>
 										<li>
 											<span>Country:</span>
-											America
+											Maroc
 										</li>
 										<li>
 											<span>Address:</span>
@@ -228,148 +273,6 @@ if($admin != null){
 											San Diego, CA 92115
 										</li>
 									</ul>
-								</div>
-								<div class="profile-social">
-									<h5 class="mb-20 h5 text-blue">Social Links</h5>
-									<ul class="clearfix">
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#3b5998"
-												data-color="#ffffff"
-												><i class="fa fa-facebook"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#1da1f2"
-												data-color="#ffffff"
-												><i class="fa fa-twitter"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#007bb5"
-												data-color="#ffffff"
-												><i class="fa fa-linkedin"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#f46f30"
-												data-color="#ffffff"
-												><i class="fa fa-instagram"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#c32361"
-												data-color="#ffffff"
-												><i class="fa fa-dribbble"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#3d464d"
-												data-color="#ffffff"
-												><i class="fa fa-dropbox"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#db4437"
-												data-color="#ffffff"
-												><i class="fa fa-google-plus"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#bd081c"
-												data-color="#ffffff"
-												><i class="fa fa-pinterest-p"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#00aff0"
-												data-color="#ffffff"
-												><i class="fa fa-skype"></i
-											></a>
-										</li>
-										<li>
-											<a
-												href="#"
-												class="btn"
-												data-bgcolor="#00b489"
-												data-color="#ffffff"
-												><i class="fa fa-vine"></i
-											></a>
-										</li>
-									</ul>
-								</div>
-								<div class="profile-skills">
-									<h5 class="mb-20 h5 text-blue">Key Skills</h5>
-									<h6 class="mb-5 font-14">HTML</h6>
-									<div class="progress mb-20" style="height: 6px">
-										<div
-											class="progress-bar"
-											role="progressbar"
-											style="width: 90%"
-											aria-valuenow="0"
-											aria-valuemin="0"
-											aria-valuemax="100"
-										></div>
-									</div>
-									<h6 class="mb-5 font-14">Css</h6>
-									<div class="progress mb-20" style="height: 6px">
-										<div
-											class="progress-bar"
-											role="progressbar"
-											style="width: 70%"
-											aria-valuenow="0"
-											aria-valuemin="0"
-											aria-valuemax="100"
-										></div>
-									</div>
-									<h6 class="mb-5 font-14">jQuery</h6>
-									<div class="progress mb-20" style="height: 6px">
-										<div
-											class="progress-bar"
-											role="progressbar"
-											style="width: 60%"
-											aria-valuenow="0"
-											aria-valuemin="0"
-											aria-valuemax="100"
-										></div>
-									</div>
-									<h6 class="mb-5 font-14">Bootstrap</h6>
-									<div class="progress mb-20" style="height: 6px">
-										<div
-											class="progress-bar"
-											role="progressbar"
-											style="width: 80%"
-											aria-valuenow="0"
-											aria-valuemin="0"
-											aria-valuemax="100"
-										></div>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -381,9 +284,8 @@ if($admin != null){
 											<li class="nav-item">
 												<a
 													class="nav-link"
-													data-toggle="tab"
-													href="#setting"
-													role="tab"
+													
+													href="#"
 													>Settings</a
 												>
 											</li>
@@ -396,23 +298,27 @@ if($admin != null){
 												role="tabpanel"
 											>
 												<div class="profile-setting">
-													<form>
+													<form method="post">
 														<ul class="profile-edit-list row">
 															<li class="weight-500 col-md-6">
 																<h4 class="text-blue h5 mb-20">
 																	Edit Your Personal Setting
 																</h4>
 																<div class="form-group">
-																	<label>Full Name</label>
+																	<label>Nom</label>
 																	<input
 																		class="form-control form-control-lg"
+																		name="nom"
+																		value="<?php echo $nom; ?>"
 																		type="text"
 																	/>
 																</div>
 																<div class="form-group">
-																	<label>Title</label>
+																	<label>Prenom</label>
 																	<input
 																		class="form-control form-control-lg"
+																		name="prenom"
+																		value="<?php echo $prenom; ?>"
 																		type="text"
 																	/>
 																</div>
@@ -420,124 +326,17 @@ if($admin != null){
 																	<label>Email</label>
 																	<input
 																		class="form-control form-control-lg"
+																		name="email"
+																		value="<?php echo $email; ?>"
 																		type="email"
 																	/>
-																</div>
-																<div class="form-group">
-																	<label>Date of birth</label>
-																	<input
-																		class="form-control form-control-lg date-picker"
-																		type="text"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Gender</label>
-																	<div class="d-flex">
-																		<div
-																			class="custom-control custom-radio mb-5 mr-20"
-																		>
-																			<input
-																				type="radio"
-																				id="customRadio4"
-																				name="customRadio"
-																				class="custom-control-input"
-																			/>
-																			<label
-																				class="custom-control-label weight-400"
-																				for="customRadio4"
-																				>Male</label
-																			>
-																		</div>
-																		<div
-																			class="custom-control custom-radio mb-5"
-																		>
-																			<input
-																				type="radio"
-																				id="customRadio5"
-																				name="customRadio"
-																				class="custom-control-input"
-																			/>
-																			<label
-																				class="custom-control-label weight-400"
-																				for="customRadio5"
-																				>Female</label
-																			>
-																		</div>
-																	</div>
-																</div>
-																<div class="form-group">
-																	<label>Country</label>
-																	<select
-																		class="selectpicker form-control form-control-lg"
-																		data-style="btn-outline-secondary btn-lg"
-																		title="Not Chosen"
-																	>
-																		<option>United States</option>
-																		<option>India</option>
-																		<option>United Kingdom</option>
-																	</select>
-																</div>
-																<div class="form-group">
-																	<label>State/Province/Region</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Postal Code</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Phone Number</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Address</label>
-																	<textarea class="form-control"></textarea>
-																</div>
-																<div class="form-group">
-																	<label>Visa Card Number</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Paypal ID</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																	/>
-																</div>
-																<div class="form-group">
-																	<div
-																		class="custom-control custom-checkbox mb-5"
-																	>
-																		<input
-																			type="checkbox"
-																			class="custom-control-input"
-																			id="customCheck1-1"
-																		/>
-																		<label
-																			class="custom-control-label weight-400"
-																			for="customCheck1-1"
-																			>I agree to receive notification
-																			emails</label
-																		>
-																	</div>
 																</div>
 																<div class="form-group mb-0">
 																	<input
 																		type="submit"
 																		class="btn btn-primary"
-																		value="Update Information"
+																		name="informations"
+																		value="Modifier Informations"
 																	/>
 																</div>
 															</li>
@@ -546,90 +345,29 @@ if($admin != null){
 																	Edit Social Media links
 																</h4>
 																<div class="form-group">
-																	<label>Facebook URL:</label>
+																	<label>Ancien Mot De Passe</label>
 																	<input
 																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
+																		name="amdp"
+																		type="password"
+																		placeholder="Votre mot de passe"
 																	/>
 																</div>
 																<div class="form-group">
-																	<label>Twitter URL:</label>
+																	<label>Nouveau Mot De Passe</label>
 																	<input
 																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Linkedin URL:</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Instagram URL:</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Dribbble URL:</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Dropbox URL:</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Google-plus URL:</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Pinterest URL:</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Skype URL:</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
-																	/>
-																</div>
-																<div class="form-group">
-																	<label>Vine URL:</label>
-																	<input
-																		class="form-control form-control-lg"
-																		type="text"
-																		placeholder="Paste your link here"
+																		name="nmdp"
+																		type="password"
+																		placeholder="Entrez un nouveau mot de passe"
 																	/>
 																</div>
 																<div class="form-group mb-0">
 																	<input
 																		type="submit"
 																		class="btn btn-primary"
-																		value="Save & Update"
+																		name="password"
+																		value="Sauvgarder & Modifier"
 																	/>
 																</div>
 															</li>
@@ -645,88 +383,9 @@ if($admin != null){
 						</div>
 					</div>
 				</div>
-				<div class="footer-wrap pd-20 mb-20 card-box">
-					DeskApp - Bootstrap 4 Admin Template By
-					<a href="https://github.com/dropways" target="_blank"
-						>Ankit Hingarajiya</a
-					>
-				</div>
 			</div>
 		</div>
-		<!-- welcome modal start -->
-		<div class="welcome-modal">
-			<button class="welcome-modal-close">
-				<i class="bi bi-x-lg"></i>
-			</button>
-			<iframe
-				class="w-100 border-0"
-				src="https://embed.lottiefiles.com/animation/31548"
-			></iframe>
-			<div class="text-center">
-				<h3 class="h5 weight-500 text-center mb-2">
-					Open source
-					<span role="img" aria-label="gratitude">❤️</span>
-				</h3>
-				<div class="pb-2">
-					<a
-						class="github-button"
-						href="https://github.com/dropways/deskapp"
-						data-color-scheme="no-preference: dark; light: light; dark: light;"
-						data-icon="octicon-star"
-						data-size="large"
-						data-show-count="true"
-						aria-label="Star dropways/deskapp dashboard on GitHub"
-						>Star</a
-					>
-					<a
-						class="github-button"
-						href="https://github.com/dropways/deskapp/fork"
-						data-color-scheme="no-preference: dark; light: light; dark: light;"
-						data-icon="octicon-repo-forked"
-						data-size="large"
-						data-show-count="true"
-						aria-label="Fork dropways/deskapp dashboard on GitHub"
-						>Fork</a
-					>
-				</div>
-			</div>
-			<div class="text-center mb-1">
-				<div>
-					<a
-						href="https://github.com/dropways/deskapp"
-						target="_blank"
-						class="btn btn-light btn-block btn-sm"
-					>
-						<span class="text-danger weight-600">STAR US</span>
-						<span class="weight-600">ON GITHUB</span>
-						<i class="fa fa-github"></i>
-					</a>
-				</div>
-				<script
-					async
-					defer="defer"
-					src="https://buttons.github.io/buttons.js"
-				></script>
-			</div>
-			<a
-				href="https://github.com/dropways/deskapp"
-				target="_blank"
-				class="btn btn-success btn-sm mb-0 mb-md-3 w-100"
-			>
-				DOWNLOAD
-				<i class="fa fa-download"></i>
-			</a>
-			<p class="font-14 text-center mb-1 d-none d-md-block">
-				Available in the following technologies:
-			</p>
-			<div class="d-none d-md-flex justify-content-center h1 mb-0 text-danger">
-				<i class="fa fa-html5"></i>
-			</div>
-		</div>
-		<button class="welcome-modal-btn">
-			<i class="fa fa-download"></i> Download
-		</button>
-		<!-- welcome modal end -->
+
 		<!-- js -->
 		<script src="vendors/scripts/core.js"></script>
 		<script src="vendors/scripts/script.min.js"></script>

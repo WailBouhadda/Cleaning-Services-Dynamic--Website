@@ -211,7 +211,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="reclamatons.php" class="dropdown-toggle no-arrow">
+							<a href="reclamations.php" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-chat-right-dots"></span
 								><span class="mtext">Reclamations</span>
 							</a>

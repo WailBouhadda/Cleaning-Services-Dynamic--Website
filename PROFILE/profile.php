@@ -15,6 +15,8 @@ $client = $_SESSION['client'];
 
 if($client != null){
 
+
+  $idclient = $client->getId();
   $idcard = $client->getIDcard();
   $nom = $client->getNom();
   $prenom = $client->getPrenom();
@@ -24,7 +26,7 @@ if($client != null){
 
   $today = date('Y-m-d');
   /* get nbr seances */
-  $seancesSQL = "SELECT count(*) FROM reservation WHERE idclient = ".$client->getId()." AND dateseance < '".$today."'";
+  $seancesSQL = "SELECT count(*) FROM reservation WHERE idclient = ".$idclient." AND dateseance < '".$today."'";
 
   $seances = $DB->executeSQL($seancesSQL);
                                                         
@@ -42,7 +44,7 @@ if($client != null){
 
 
   /* get nbr reservations */
-  $reservationsSQL = "SELECT count(*) FROM reservation WHERE idclient = ".$client->getId()." AND dateseance > '".$today."'";
+  $reservationsSQL = "SELECT count(*) FROM reservation WHERE idclient = ".$idclient." AND dateseance > '".$today."'";
 
   $reservations = $DB->executeSQL($reservationsSQL);
                                                         

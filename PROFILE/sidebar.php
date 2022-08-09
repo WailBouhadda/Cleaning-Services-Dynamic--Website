@@ -91,7 +91,7 @@
 					</li>
 
 					<li class="<?php if($page === "ASSISTANCE"){ echo "active"; }; ?>">
-						<a href="assitance.php">
+						<a href="assistance.php">
 							<i class="menu-icon fa fa-headset"></i>
 							<span class="menu-text"> Assistance </span>
 						</a>

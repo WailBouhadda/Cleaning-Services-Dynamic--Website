@@ -119,7 +119,7 @@ if(isset($_POST['reserverapidement'])){
                 $test = $DB->executeSQL($inserclientSQL);
 
 
-
+                $client->setId($idclient);
 
 
                 if($test){

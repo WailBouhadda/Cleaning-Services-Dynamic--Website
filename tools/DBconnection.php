@@ -23,6 +23,7 @@ private $conn = null;
  public function executeSQL($sql){
 
   $con = $this->connect();
+  
   $result = $con->query($sql);
 
   return $result;

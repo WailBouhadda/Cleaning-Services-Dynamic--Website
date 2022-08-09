@@ -79,66 +79,53 @@
 						<div class="dropdown-menu dropdown-menu-right">
 							<div class="notification-list mx-h-350 customscroll">
 								<ul>
+
+								<?php
+
+
+									$getusers = "SELECT DISTINCT u.iduser, u.idcard, u.nom, u.prenom, u.email, u.telephone FROM users as u, message as m
+												WHERE u.iduser = m.idfrom AND m.idto = ".$idadmin." AND type like 'u' AND m.statut = 0";
+
+									$users = $DB->executeSQL($getusers);
+
+									$idcard = null;
+
+									if($users->num_rows > 0){
+
+										for($i = 0 ; $i < $users->num_rows ; $i++){
+										
+											$row = $users->fetch_assoc();
+
+											$idcard = $row["idcard"];
+
+											$nbrnewmsgsSQL = "SELECT count(*) FROM message WHERE idfrom = ".$row['iduser']." AND idto = ".$idadmin." AND type like 'u' AND  statut = 0";
+											
+											$nbrmsgsresult = $DB->executeSQL($nbrnewmsgsSQL);
+											
+											if($nbrmsgsresult->num_rows > 0){
+												
+												if($rowmsgs = $nbrmsgsresult->fetch_assoc()){
+										
+													$nbrmsgs = $rowmsgs['count(*)'];
+												}
+
+											}
+
+									?>
+
 									<li>
-										<a href="#">
-											<img src="vendors/images/img.jpg" alt="" />
-											<h3>John Doe</h3>
+										<a href="reclamations.php?idcon=<?php echo $row['iduser'];?>">
+											<img src="../idcards/<?php echo $idcard;?>" alt="" />
+											<h3><?php echo $row["nom"]." ".$row["prenom"];?></h3>
 											<p>
-												Lorem ipsum dolor sit amet, consectetur adipisicing
-												elit, sed...
+												<i class="fa fa-circle text-light-green"></i> <?php if($nbrmsgs > 0){ echo $nbrmsgs." Nouveaux message";}?>
 											</p>
 										</a>
 									</li>
-									<li>
-										<a href="#">
-											<img src="vendors/images/photo1.jpg" alt="" />
-											<h3>Lea R. Frith</h3>
-											<p>
-												Lorem ipsum dolor sit amet, consectetur adipisicing
-												elit, sed...
-											</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<img src="vendors/images/photo2.jpg" alt="" />
-											<h3>Erik L. Richards</h3>
-											<p>
-												Lorem ipsum dolor sit amet, consectetur adipisicing
-												elit, sed...
-											</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<img src="vendors/images/photo3.jpg" alt="" />
-											<h3>John Doe</h3>
-											<p>
-												Lorem ipsum dolor sit amet, consectetur adipisicing
-												elit, sed...
-											</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<img src="vendors/images/photo4.jpg" alt="" />
-											<h3>Renee I. Hansen</h3>
-											<p>
-												Lorem ipsum dolor sit amet, consectetur adipisicing
-												elit, sed...
-											</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<img src="vendors/images/img.jpg" alt="" />
-											<h3>Vicki M. Coleman</h3>
-											<p>
-												Lorem ipsum dolor sit amet, consectetur adipisicing
-												elit, sed...
-											</p>
-										</a>
-									</li>
+									<?php
+										}
+									}
+									?>
 								</ul>
 							</div>
 						</div>

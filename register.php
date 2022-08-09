@@ -29,6 +29,23 @@ if(isset($_POST['inscription'])){
 
     $error = $registerDAO->clientregister($client);
 
+    $idclientSQL = "SELECT iduser FROM users WHERE nom = '".$nom."' and prenom = '".$prenom."' and email ='".$email."'";
+                    
+    $result = $DB->executeSQL($idclientSQL);
+
+    $idclient = null;
+
+    if($result->num_rows > 0){
+
+        if($row = $result->fetch_assoc()){
+            
+            $idclient = $row["iduser"];
+        }
+
+    }
+
+    $client->setId($idclient);
+
     if($error == 1){
       session_start();
       $_SESSION['client'] = $client;
