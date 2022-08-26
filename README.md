@@ -14,6 +14,10 @@
 
 <br>
 
+### 1. USER
+
+<br>
+
 #### Home
 
 <hr>
@@ -80,6 +84,16 @@
 
 <br>
 
+#### User Dashboard
+
+<hr>
+
+![dashboard user](https://user-images.githubusercontent.com/47559086/186962635-6bb8c952-1e77-4e07-bf7a-89faa82e7331.PNG)
+
+<hr>
+
+<br>
+
 #### Add Reservation
 
 <hr>
@@ -106,6 +120,10 @@
 
 ![profile](https://user-images.githubusercontent.com/47559086/181364349-78b636f8-6678-43de-a618-39eb90a1ac6d.PNG)
 
+<hr>
+
+<br>
+
 #### Update Profile 
 
 <hr>
@@ -122,6 +140,96 @@
 
 ![seances](https://user-images.githubusercontent.com/47559086/181364334-9e902e47-f5d5-4fde-b9f5-34a38907a3e0.PNG)
 
+<hr>
+
+<br>
+
+#### Assistance
+
+<hr>
+
+![userassitance](https://user-images.githubusercontent.com/47559086/186963075-bc5ec38b-7a79-4cc5-9079-4f20bb09fad1.PNG)
+
+
+<br>
+
+### 1. ADMIN
+
+<br>
+
+#### Login
+
+<hr>
+
+![admin login](https://user-images.githubusercontent.com/47559086/186963266-233b34cc-56be-46ee-9b86-9a2561bcb5ed.PNG)
+
+<hr>
+
+<br>
+
+#### Dashboard
+
+<hr>
+
+![dashboard admin](https://user-images.githubusercontent.com/47559086/186963336-3b460e3c-ce77-42d3-aebc-6a539743432d.PNG)
+
+<hr>
+
+<br>
+
+#### Reservations
+
+<hr>
+
+![reservationadmin](https://user-images.githubusercontent.com/47559086/186963409-d45900fd-f0c3-4989-9f2e-75507334f993.PNG)
+
+<hr>
+
+<br>
+
+#### Sessions
+
+<hr>
+
+![seancesadmin](https://user-images.githubusercontent.com/47559086/186963486-f5ea8025-cd7e-4240-b73c-a7f36d1da75f.PNG)
+
+<hr>
+
+<br>
+
+#### Users
+
+<hr>
+
+![adminusers](https://user-images.githubusercontent.com/47559086/186963547-c5e7b0e0-0b2d-4ee4-a74f-5c9777e5a6df.PNG)
+
+<hr>
+
+<br>
+
+#### Assistance
+
+<hr>
+
+![adminassistance](https://user-images.githubusercontent.com/47559086/186963648-2b213853-6e64-4769-83d3-fe31b7adc895.PNG)
+
+<hr>
+
+<br>
+
+#### Profile & Settings
+
+<hr>
+
+![admin profile and settings](https://user-images.githubusercontent.com/47559086/186963739-70ca077c-5470-4165-97f5-9f5e9b1fcb8e.PNG)
+
+<hr>
+
+<br>
+
+<hr>
+
+<br>
 
 ## 3. Created by:
 
