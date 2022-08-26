@@ -173,7 +173,7 @@ if($admin != null){
 								<?php
                                         $today = date('Y-m-d');
 
-										$inserclientSQL = "SELECT * FROM reservation WHERE dateseance > ".$today;
+										$inserclientSQL = "SELECT * FROM reservation WHERE dateseance < ".$today;
 																
 										$reservations = $DB->executeSQL($inserclientSQL);
 												

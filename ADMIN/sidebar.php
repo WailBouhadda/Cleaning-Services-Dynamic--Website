@@ -174,9 +174,9 @@
 <div class="left-side-bar">
 			<div class="brand-logo">
 				<a href="index.html">
-					<img src="vendors/images/deskapp-logo.svg" alt="" class="dark-logo" />
+					<img src="../images/logobackoffice.png" alt="" class="dark-logo" />
 					<img
-						src="vendors/images/deskapp-logo-white.svg"
+						src="../images/logobackoffice.png"
 						alt=""
 						class="light-logo"
 					/>

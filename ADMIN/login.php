@@ -45,7 +45,7 @@ if(isset($_POST['signin'])){
 	<head>
 		<!-- Basic Page Info -->
 		<meta charset="utf-8" />
-		<title>DeskApp - Bootstrap Admin Dashboard HTML Template</title>
+		<title>ALLO MENAGE</title>
 
 		<!-- Site favicon -->
 		<link
@@ -121,8 +121,8 @@ if(isset($_POST['signin'])){
 				class="container-fluid d-flex justify-content-between align-items-center"
 			>
 				<div class="brand-logo">
-					<a href="login.html">
-						<img src="vendors/images/deskapp-logo.svg" alt="" />
+					<a href="login.php">
+						<img src="../images/logobackoffice.png" alt="" />
 					</a>
 				</div>
 				<div class="login-menu">
@@ -140,7 +140,7 @@ if(isset($_POST['signin'])){
 					<div class="col-md-6 col-lg-5">
 						<div class="login-box bg-white box-shadow border-radius-10">
 							<div class="login-title">
-								<h2 class="text-center text-primary">Login To DeskApp</h2>
+								<h2 class="text-center text-primary">Login</h2>
 							</div>
 							<form method="post">
 								<div class="select-role">

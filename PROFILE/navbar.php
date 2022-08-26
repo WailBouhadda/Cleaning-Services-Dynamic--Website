@@ -35,6 +35,7 @@
 
 					<?php
 
+						$nbrmsg = 0;
 						  
 						$getidadminSQL = "SELECT DISTINCT idto FROM message WHERE idfrom = ".$idclient." AND type like 'u'";
 
@@ -62,14 +63,17 @@
 								}
 
 							}
+
+									$getmessagesSQL = "SELECT * FROM message WHERE  (idfrom = ".$idadmin." AND idto = ".$idclient." AND type like 'a') AND statut = 0 ORDER BY date";
+
+								$messages = $DB->executeSQL($getmessagesSQL);
+
+								$nbrmsg =  $messages->num_rows;
+
+
 						}
 
-						$getmessagesSQL = "SELECT * FROM message WHERE  (idfrom = ".$idadmin." AND idto = ".$idclient." AND type like 'a') AND statut = 0 ORDER BY date";
-
-						$messages = $DB->executeSQL($getmessagesSQL);
-
-						$nbrmsg =  $messages->num_rows;
-
+						
 						
 					
 					?>

@@ -27,6 +27,7 @@ if($client != null){
   
   }
 
+  $idadmin = 2;
 
   
   $getidadminSQL = "SELECT DISTINCT idto FROM message WHERE idfrom = ".$idclient." AND type like 'u'";
@@ -55,12 +56,14 @@ if($client != null){
           }
 
       }
+
+	  $setvuetomsgSQL = "UPDATE message SET statut = 1 WHERE idfrom = ".$idadmin." AND idto = ".$idclient." AND type like 'a'";
+
+	  $vue = $DB->executeSQL($setvuetomsgSQL);
   }
 
 
-  $setvuetomsgSQL = "UPDATE message SET statut = 1 WHERE idfrom = ".$idadmin." AND idto = ".$idclient." AND type like 'a'";
 
-  $vue = $DB->executeSQL($setvuetomsgSQL);
 
 
 
@@ -93,6 +96,8 @@ if($client != null){
 		<!-- bootstrap & fontawesome -->
 		<link rel="stylesheet" href="assets/css/bootstrap.css" />
 		<link rel="stylesheet" href="components/font-awesome/css/font-awesome.css" />
+
+		 
 
 		<!-- page specific plugin styles -->
 
